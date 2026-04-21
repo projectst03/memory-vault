@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Chronicles | Memory Vault</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;900&display=swap');
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #000; color: white;
+            -webkit-user-select: none; user-select: none;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.4); border-radius: 10px; }
+        
+        @keyframes revealUp {
+            from { opacity: 0; transform: translateY(30px); filter: blur(10px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0px); }
+        }
+        
+
+        .reveal { 
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .reveal:hover {
+            transform: translateY(-8px) scale(1.03);
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 15px rgba(59, 130, 246, 0.2);
+            z-index: 10;
+        }
+
+        #lightbox { transition: opacity 1.2s ease; background-color: #000; }
+        #lightboxImg, #videoContainer { 
+            transition: opacity 3.0s ease-in-out, transform 4.0s cubic-bezier(0.1, 0, 0.3, 1), filter 3.0s ease-out !important;
+            opacity: 0; transform: scale(0.92); filter: blur(15px);
+        }
+        .media-active { opacity: 1 !important; transform: scale(1.04) !important; filter: blur(0px) !important; }
+        #lightboxImg { width: auto; height: auto; max-width: 100vw !important; max-height: 100vh !important; object-fit: contain; }
+
+        .glass-btn {
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1); padding: 8px 16px;
+            border-radius: 99px; font-size: 10px; font-weight: 800;
+            letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.3s;
+        }
+        .glass-btn:hover { background: rgba(59, 130, 246, 0.2); border-color: #3b82f6; }
+        
+        .nav-zone {
+            height: 100%; width: 15%; position: absolute; top: 0;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 140; cursor: pointer; opacity: 0; transition: opacity 0.3s;
+            font-size: 3rem; color: white;
+        }
+        .nav-zone:hover { opacity: 0.4; }
+
+        #songList { transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); transform: translateY(20px); opacity: 0; pointer-events: none; max-height: 0; }
+        #songList.active { transform: translateY(0); opacity: 1; pointer-events: auto; max-height: 300px; margin-bottom: 12px; }
+        .song-item { transition: all 0.3s; border-left: 0px solid #3b82f6; }
+        .song-item:hover { background: rgba(59, 130, 246, 0.15); border-left: 3px solid #3b82f6; padding-left: 12px; color: white; }
+        .active-track { color: #3b82f6 !important; font-weight: 900; }
+        .playing-pulse { animation: pulse-blue 2s infinite; }
+        @keyframes pulse-blue {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.6); }
+            70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+        /* Heart Interaction Animation */
+@keyframes floatUp { 0% { transform: translateY(0) scale(0.5); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateY(-100px) scale(1.5); opacity: 0; } }
+.heart-symbol { 
+    position: absolute; 
+    color: #ef4444; 
+    font-size: 3rem; 
+    pointer-events: none; /* Crucial: lets clicks pass through */
+    animation: floatUp 0.8s ease-out forwards; 
+    z-index: 200; 
+}
+@keyframes zoomEffect {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.animate-zoom {
+    animation: zoomEffect 10s ease-in-out infinite;
+}
+/* Navigation Zones */
+.nav-zone { height: 100%; width: 15%; position: absolute; top: 0; display: flex; align-items: center; justify-content: center; z-index: 140; cursor: pointer; opacity: 0; transition: opacity 0.3s; font-size: 3rem; color: white; }
+.nav-zone:hover { opacity: 0.4; background: rgba(255,255,255,0.05); }
+.nav-zone.left { left: 0; }
+.nav-zone.right { right: 0; }
+    </style>
+</head>
+<body class="custom-scrollbar overflow-x-hidden">
+
+    <nav class="p-8 flex justify-center gap-10 text-xs uppercase tracking-widest font-bold border-b border-white/5 bg-black/80 backdrop-blur-xl sticky top-0 z-50">
+        <a href="index.html" class="hover:text-blue-400 transition">Home</a>
+        <a href="gallery.html" class="hover:text-blue-400 transition">Gallery</a>
+        <a href="TimeLessVibe.html" class="text-blue-400 border-b border-blue-400 pb-1">TimeLessVibe</a>
+        <a href="videos.html" class="hover:text-blue-300 transition">Videos</a>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 py-10 relative z-10">
+        <header id="galleryHeader" class="text-center pt-17 pb-10 px-2">
+            <div class="inline-block transform transition-transform duration-500 hover:scale-105">
+                <h1 class="text-7xl md:text-7.9xl font-black tracking-tighter italic mb-4 uppercase leading-none">
+                    THE <span class="text-blue-500">VAULT</span>
+                </h1>
+                <p id="vaultSubtitle" class="text-gray-500 uppercase tracking-[0.5em] text-[10px] font-bold">MEMORIES WAITING FOR YOU...</p>
+            </div>
+        </header>
+
+        <div id="collectionLobby" class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20 hidden">
+             
+
+        
+
+             <div onclick="filterCollection('TimelessVibe')" class="reveal group relative h-96 rounded-3xl overflow-hidden cursor-pointer border-white/10 shadow-2xl" style="animation: revealUp 0.8s ease forwards; animation-delay: 0.4s; opacity:1;">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10"></div>
+                <img id="thumbTimelessVibe" src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-60">
+                <div class="absolute bottom-8 left-8 z-20">
+                    <h2 class="text-4xl font-black italic tracking-tighter leading-none mb-2">TIME LESS VIBES<br> </h2>
+                    <p class="text-blue-500 text-[9px] font-black tracking-[0.4em] uppercase">Beyond The Moment</p>
+                </div>
+            </div>
+
+            
+
+            <div onclick="filterCollection('BlueWater')" class="reveal group relative h-96 rounded-3xl overflow-hidden cursor-pointer border-white/10 shadow-2xl" style="animation: revealUp 0.8s ease forwards; animation-delay: 0.4s; opacity:1;">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10"></div>
+                <img id="thumbBlueWater" src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-60">
+                <div class="absolute bottom-8 left-8 z-20">
+                    <h2 class="text-4xl font-black italic tracking-tighter leading-none mb-2">INTO THE BLUE<br> </h2>
+                    <p class="text-blue-500 text-[9px] font-black tracking-[0.4em] uppercase">Moments That Stay</p>
+                </div>
+            </div>
+
+                      
+
+            <div onclick="filterCollection('Farmhouse')" class="reveal group relative h-96 rounded-3xl overflow-hidden cursor-pointer border-white/10 shadow-2xl" style="animation: revealUp 0.8s ease forwards; animation-delay: 0.2s; opacity:1;">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10"></div>
+                <img id="thumbFarmhouse" src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-60">
+                <div class="absolute bottom-8 left-8 z-20">
+                    <h2 class="text-4xl font-black italic tracking-tighter leading-none mb-2">FARMHOUSE<br>FUN</h2>
+                    <p class="text-blue-500 text-[9px] font-black tracking-[0.4em] uppercase">Unfiltered Joy</p>
+                </div>
+            </div>
+
+        
+
+           
+        </div>
+
+        <div id="backBtn" class="hidden mb-12 flex justify-center">
+            <button onclick="showLobby()" class="glass-btn border-blue-500/50 text-blue-400">← Back to MEMORIES</button>
+        </div>
+
+        <div id="displayGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 hidden"></div>
+    </main>
+
+    <div id="lightbox" class="fixed inset-0 z-[100] invisible opacity-0 bg-black flex items-center justify-center overflow-hidden">
+        <div class="absolute top-6 left-0 w-full px-8 flex justify-between items-center z-[210]">
+            <div class="flex gap-4">
+                <button id="slideToggle" onclick="toggleSlideshow()" class="glass-btn">Slow-Mo Slideshow</button>
+                <button onclick="toggleFullscreen()" class="glass-btn">Fullscreen</button>
+            </div>
+            <button onclick="closeLightbox()" class="text-white/40 hover:text-white text-5xl transition">×</button>
+        </div>
+       <div onclick="prevImage()" class="nav-zone left">‹</div>
+<div onclick="nextImage()" class="nav-zone right">›</div>
+        <img id="lightboxImg" src="" class="hidden">
+        <div id="videoContainer" class="hidden w-full h-full flex items-center justify-center p-10"></div>
+        <div class="absolute bottom-10 left-0 w-full text-center z-[160]">
+            <div id="counter" class="text-[11px] text-white/60 font-bold tracking-[0.4em]"></div>
+        </div>
+    </div>
+
+    <script>
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwdAevfwGcpk-ny-pxGPRJ1GzaA9N23U-M_gC4rrr01LhgbP3apFXHvI0NAk25CCxPt/exec';
+        let allFiles = []; 
+        let currentPhotos = [];
+        let currentIndex = 0;
+        let slideTimer = null;
+
+        function setCollectionThumbnails() {
+            const collections = [
+                
+       
+                { id: 'thumbTimelessVibe', keyword: 'TimelessVibe' },
+
+                
+                 { id: 'thumbBlueWater', keyword: 'BlueWater' },
+               
+    
+                { id: 'thumbFarmhouse', keyword: 'Farmhouse' },
+               
+            ];
+            collections.forEach(col => {
+                const thumbFile = allFiles.find(f => 
+                    f.name.toLowerCase().includes(col.keyword.toLowerCase()) && 
+                    !f.type.toLowerCase().includes('video')
+                );
+                if (thumbFile) {
+                    document.getElementById(col.id).src = `https://drive.google.com/thumbnail?authuser=0&sz=w800&id=${thumbFile.id}`;
+                }
+            });
+        }
+
+        async function syncWithDrive() {
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL);
+                allFiles = await response.json();
+                setCollectionThumbnails();
+                document.getElementById('collectionLobby').classList.remove('hidden');
+                document.getElementById('vaultSubtitle').innerText = "SELECT A CAPTURED MOMENT";
+                document.getElementById('playerWrapper').classList.remove('hidden');
+                document.getElementById('playerWrapper').classList.add('flex');
+            } catch (error) { console.error(error); }
+        }
+
+        function filterCollection(keyword) {
+            document.getElementById('collectionLobby').classList.add('hidden');
+            document.getElementById('displayGrid').classList.remove('hidden');
+            document.getElementById('backBtn').classList.remove('hidden');
+            currentPhotos = allFiles.filter(file => file.name.toLowerCase().includes(keyword.toLowerCase()));
+            renderGrid(keyword);
+        }
+
+        function renderGrid(keyword) {
+            const grid = document.getElementById('displayGrid');
+            grid.innerHTML = ''; 
+            currentPhotos.forEach((file, index) => {
+                const isVideo = file.type.toLowerCase().includes('video');
+                const gridURL = isVideo ? `https://drive.google.com/uc?id=${file.id}#t=0.001` : `https://drive.google.com/thumbnail?authuser=0&sz=w1000&id=${file.id}`;
+               // Replace your existing grid.innerHTML += block with this:
+const likes = localStorage.getItem('likes_' + file.id) || 0;
+grid.innerHTML += `
+    <div class="reveal group relative overflow-hidden rounded-3xl aspect-square cursor-pointer" 
+         onclick="handleWrapperClick(event, ${index}, '${file.id}')">
+        ${isVideo ? 
+            `<video src="${gridURL}" class="w-full h-full object-cover opacity-80" muted loop playsinline></video>` : 
+            `<img src="${gridURL}" loading="lazy" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-all duration-700">`
+        }
+        <div class="absolute bottom-4 right-4 z-30 flex items-center gap-2 bg-black/50 backdrop-blur-md px-3 py-1 rounded-full border border-white/10" 
+             onclick="incrementLike('${file.id}', event)">
+            <button class="text-red-500">❤️</button>
+            <span id="count_${file.id}" class="text-white text-[10px] font-bold">${likes}</span>
+        </div>
+    </div>`;
+            });
+            document.getElementById('vaultSubtitle').innerText = `${keyword.toUpperCase()} : ${currentPhotos.length} MOMENTS`;
+        }
+
+        function showLobby() {
+
+// Force exit fullscreen when returning to the lobby
+    if (document.fullscreenElement) document.exitFullscreen();
+    
+    document.getElementById('collectionLobby').classList.remove('hidden');
+    // ... rest of your code
+            document.getElementById('collectionLobby').classList.remove('hidden');
+            document.getElementById('displayGrid').classList.add('hidden');
+            document.getElementById('backBtn').classList.add('hidden');
+            document.getElementById('vaultSubtitle').innerText = "SELECT A COLLECTION";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+
+    
+}
+
+
+
+
+        function updateLightbox() {
+            const photo = currentPhotos[currentIndex];
+            if (!photo) return;
+            const isVideo = photo.type.toLowerCase().includes('video');
+            const img = document.getElementById('lightboxImg');
+            const vid = document.getElementById('videoContainer');
+            img.classList.remove('media-active');
+            vid.classList.remove('media-active');
+            setTimeout(() => {
+                img.classList.add('hidden'); vid.classList.add('hidden'); vid.innerHTML = '';
+                const target = isVideo ? vid : img;
+                if (isVideo) {
+                    vid.classList.remove('hidden');
+                    vid.innerHTML = `<iframe src="https://drive.google.com/file/d/${photo.id}/preview" class="w-full h-full max-w-5xl aspect-video" allow="autoplay" allowfullscreen></iframe>`;
+                } else {
+                    img.classList.remove('hidden');
+                    img.src = `https://drive.google.com/thumbnail?authuser=0&sz=w5000&id=${photo.id}`;
+                }
+                setTimeout(() => { target.classList.add('media-active'); }, 100);
+            }, 1000); 
+            document.getElementById('counter').innerText = `${currentIndex + 1} / ${currentPhotos.length}`;
+        }
+
+       function nextImage() { currentIndex = (currentIndex + 1) % currentPhotos.length; updateLightbox(); }
+function prevImage() { currentIndex = (currentIndex - 1 + currentPhotos.length) % currentPhotos.length; updateLightbox(); }
+
+        function toggleSlideshow() {
+            const btn = document.getElementById('slideToggle');
+            if (slideTimer) {
+                clearInterval(slideTimer); slideTimer = null;
+                btn.innerText = "Slow-Mo Slideshow"; btn.style.color = "white";
+            } else {
+                btn.innerText = "Pause Slideshow"; btn.style.color = "#3b82f6";
+                slideTimer = setInterval(nextImage, 7500); 
+            }
+        }
+
+        function openLightbox(index) {
+            currentIndex = index;
+            const lb = document.getElementById('lightbox');
+            lb.classList.remove('invisible'); lb.classList.add('opacity-100');
+            updateLightbox();
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() { 
+    if(slideTimer) toggleSlideshow();
+    
+    // 1. Exit browser full-screen mode if it is active
+    if (document.fullscreenElement) {
+        document.exitFullscreen().catch(err => console.log("Error exiting fullscreen:", err));
+    }
+
+    // 2. Your existing lightbox closing logic
+    const lb = document.getElementById('lightbox');
+    lb.classList.remove('opacity-100');
+    setTimeout(() => lb.classList.add('invisible'), 800);
+    document.body.style.overflow = 'auto'; 
+}
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        }
+
+        syncWithDrive();
+
+        const playlist = [
+            { name: "College Vibes", url: "https://www.dropbox.com/scl/fi/zlc7fm6r8q2eothv3da20/Makane_X_Koodappirannor.mp3?rlkey=fnspi6xp1q3sqsg26269457xr&st=7ffpo65n&dl=1" },
+            { name: "Dude-Orchestral-Suite", url: "https://www.dropbox.com/scl/fi/20ry35sd09tc8xc7qi3jx/Dude-Orchestral-Suite-MassTamilan.dev.mp3?rlkey=rztov6c1albngjztxkg0mwuxj&st=58k35lnm&dl=1" },
+            { name: "Kanukulla", url: "https://www.dropbox.com/scl/fi/bd1nl4lftlwnjbchv5x8e/Kanukulla-Bgm-MassTamilan.dev.mp3?rlkey=a290md5lz4eahdjqy1ua7cr3e&st=1dg5pdgm&dl=1" },
+            { name: "The-Metro-Proposal", url: "https://www.dropbox.com/scl/fi/czu3kntiue6c7o81q56ei/The-Metro-Proposal-MassTamilan.dev.mp3?rlkey=j959k0zsa6d6b25a0lj7cq3mv&st=a8j0kh09&dl=1" },
+            { name: "He-will-never-Leave-Me", url: "https://www.dropbox.com/scl/fi/ntk201w46gufz4oyvflav/He-will-never-Leave-Me-alone-MassTamilan.dev.mp3?rlkey=m6m11phg53kpl7efwxen3e7iv&st=z5fa5nx4&dl=1" }
+        ];
+        let currentTrack = 0;
+
+        function initPlaylistUI() {
+            const container = document.getElementById('playlistContainer');
+            if(!container) return;
+            container.innerHTML = '';
+            playlist.forEach((song, index) => {
+                container.innerHTML += `<div onclick="selectTrack(${index})" class="song-item cursor-pointer p-2 rounded-lg text-[10px] text-white/50 flex justify-between items-center ${index === currentTrack ? 'active-track' : ''}"><span>${song.name}</span>${index === currentTrack ? '<div class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></div>' : ''}</div>`;
+            });
+        }
+
+        function toggleSongList() { document.getElementById('songList').classList.toggle('active'); }
+        function selectTrack(index) { currentTrack = index; loadTrack(index); toggleSongList(); setTimeout(toggleMusic, 400); }
+        function loadTrack(i) {
+            const audio = document.getElementById('bgAudio');
+            document.getElementById('trackName').innerText = playlist[i].name;
+            audio.src = playlist[i].url; audio.load(); initPlaylistUI();
+        }
+        async function toggleMusic() {
+            const audio = document.getElementById('bgAudio');
+            if (!audio.src || audio.src === window.location.href) loadTrack(currentTrack);
+            audio.paused ? (await audio.play(), updateUI(true)) : (audio.pause(), updateUI(false));
+        }
+        function updateUI(playing) {
+            document.getElementById('playIcon').classList.toggle('hidden', playing);
+            document.getElementById('pauseIcon').classList.toggle('hidden', !playing);
+            document.getElementById('musicBtn').classList.toggle('playing-pulse', playing);
+        }
+        window.addEventListener('DOMContentLoaded', () => { loadTrack(0); initPlaylistUI(); });
+        window.addEventListener('click', (e) => { if (!document.getElementById('playerWrapper').contains(e.target)) document.getElementById('songList').classList.remove('active'); });
+    let clickTimeout;
+
+function createHeart(target) {
+    const heart = document.createElement('div'); heart.innerHTML = '❤️'; heart.classList.add('heart-symbol');
+    const rect = target.getBoundingClientRect();
+    heart.style.left = (rect.width/2 - 20) + 'px'; heart.style.top = (rect.height/2 - 20) + 'px';
+    target.appendChild(heart);
+    setTimeout(() => heart.remove(), 800);
+}
+
+function incrementLike(fileId, e) {
+    if (e) e.stopPropagation();
+    
+    let likes = parseInt(localStorage.getItem('likes_' + fileId) || 0);
+    const hasLiked = localStorage.getItem('liked_' + fileId);
+
+    if (hasLiked) {
+        // UNLIKE logic: remove the like
+        likes = Math.max(0, likes - 1);
+        localStorage.removeItem('liked_' + fileId);
+    } else {
+        // LIKE logic: add the like
+        likes += 1;
+        localStorage.setItem('liked_' + fileId, 'true');
+    }
+
+    // Save and update the UI
+    localStorage.setItem('likes_' + fileId, likes);
+    const el = document.getElementById('count_' + fileId);
+    if (el) el.innerText = likes;
+
+    // Optional: Visually indicate the toggle (change button color)
+    const btn = e.currentTarget.querySelector('button');
+    if (btn) btn.style.opacity = hasLiked ? "1" : "0.5";
+}
+
+function handleWrapperClick(e, index, fileId) {
+    if (clickTimeout) {
+        clearTimeout(clickTimeout); clickTimeout = null;
+        createHeart(e.currentTarget); incrementLike(fileId);
+    } else {
+        clickTimeout = setTimeout(() => { openLightbox(index); clickTimeout = null; }, 250);
+    }
+}
+// Add this after your syncWithDrive() call
+document.addEventListener('DOMContentLoaded', () => {
+    syncWithDrive();
+});
+
+function attachDoubleTapListeners() {
+    const wrappers = document.querySelectorAll('.photo-wrapper');
+    let lastTap = 0;
+
+    wrappers.forEach(wrapper => {
+        wrapper.addEventListener('click', (e) => {
+            const now = new Date().getTime();
+            const timeSince = now - lastTap;
+
+            if (timeSince < 300 && timeSince > 0) {
+                // DOUBLE TAP DETECTED
+                createHeart(wrapper);
+                incrementLike(wrapper.dataset.id);
+            } else {
+                // SINGLE TAP DETECTED
+                // We use a small timeout to distinguish single vs double
+                setTimeout(() => {
+                    if (new Date().getTime() - lastTap > 300) {
+                        openLightbox(parseInt(wrapper.dataset.index));
+                    }
+                }, 300);
+            }
+            lastTap = now;
+        });
+    });
+}
+function handleLightboxDoubleClick(e) {
+    // 1. Create the heart element
+    const heart = document.createElement('div');
+    heart.innerHTML = '❤️';
+    heart.classList.add('heart-symbol'); // Uses your existing CSS animation
+    
+    // 2. Position it exactly where you tapped
+    // We use the event coordinates (e.clientX, e.clientY)
+    heart.style.position = 'fixed';
+    heart.style.left = (e.clientX - 25) + 'px';
+    heart.style.top = (e.clientY - 25) + 'px';
+    document.body.appendChild(heart);
+    
+    // 3. Trigger the Like
+    const currentPhoto = currentPhotos[currentIndex];
+    incrementLike(currentPhoto.id);
+    
+    // 4. Cleanup
+    setTimeout(() => heart.remove(), 800);
+}
+    </script>
+
+    <div id="playerWrapper" class="hidden fixed bottom-6 right-6 z-[200] flex-col items-end">
+        <div id="songList" class="w-64 bg-black/90 backdrop-blur-2xl border border-white/10 rounded-2xl p-4 shadow-2xl overflow-hidden">
+            <h3 class="text-[8px] uppercase tracking-[0.3em] text-white/30 mb-3 ml-1 font-black">Playlist</h3>
+            <div id="playlistContainer" class="flex flex-col gap-1 max-h-40 overflow-y-auto custom-scrollbar"></div>
+        </div>
+        <div id="musicPlayer" class="flex items-center gap-4 bg-white/5 backdrop-blur-xl border border-white/10 p-2 pr-5 rounded-full shadow-2xl hover:bg-white/10 transition-all">
+            <button onclick="toggleMusic()" id="musicBtn" class="w-10 h-10 flex items-center justify-center bg-blue-600 rounded-full transition-all hover:scale-110">
+                <svg id="playIcon" class="w-4 h-4 fill-white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                <svg id="pauseIcon" class="w-4 h-4 fill-white hidden" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            </button>
+            <div class="flex flex-col cursor-pointer" onclick="toggleSongList()">
+                <span class="text-[7px] uppercase tracking-[0.3em] text-blue-400 font-black">Memory Audio</span>
+                <span id="trackName" class="text-[10px] text-white/70 font-bold max-w-[120px] truncate">Loading...</span>
+            </div>
+        </div>
+    </div>
+    <audio id="bgAudio" loop></audio>
+</body>
+</html>
