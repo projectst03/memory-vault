@@ -29,19 +29,26 @@
             background: rgba(255, 255, 255, 0.02);
         }
         .reveal:hover {
-            transform: translateY(-8px) scale(1.03);
+            transform: translateY(-8px) scale(1);
             border-color: rgba(59, 130, 246, 0.4);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 15px rgba(59, 130, 246, 0.2);
             z-index: 10;
         }
 
-        #lightbox { transition: opacity 1.2s ease; background-color: #000; }
-        #lightboxImg, #videoContainer { 
-            transition: opacity 3.0s ease-in-out, transform 4.0s cubic-bezier(0.1, 0, 0.3, 1), filter 3.0s ease-out !important;
-            opacity: 0; transform: scale(0.92); filter: blur(15px);
-        }
-        .media-active { opacity: 1 !important; transform: scale(1.04) !important; filter: blur(0px) !important; }
-        #lightboxImg { width: auto; height: auto; max-width: 100vw !important; max-height: 100vh !important; object-fit: contain; }
+      #lightboxImg, #videoContainer { 
+    /* Removed 'transform' from the transition list */
+    transition: opacity 3.0s ease-in-out, filter 3.0s ease-out !important;
+    opacity: 0; 
+    transform: none; /* Explicitly disable any transform */
+    filter: blur(15px);
+}
+
+.media-active { 
+    /* Removed transform scale entirely */
+    opacity: 1 !important; 
+    transform: none !important; 
+    filter: blur(0px) !important; 
+}
 
         .glass-btn {
             background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px);
@@ -110,7 +117,7 @@
         <div id="collectionLobby" class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20 hidden">
              <div onclick="filterCollection('FirstFrame')" class="reveal group relative h-96 rounded-3xl overflow-hidden cursor-pointer border-white/10 shadow-2xl" style="animation: revealUp 0.8s ease forwards; animation-delay: 0.4s; opacity:1;">
                 <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10"></div>
-                <img id="thumbFirstFrame" src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-60 animate-slow-zoom">
+                <img id="thumbFirstFrame" src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800" class="w-full h-full object-cover  transition-opacity duration-700 opacity-60 animate-slow-zoom">
                 <div class="absolute bottom-8 left-8 z-20">
                     <h2 class="text-4xl font-black italic tracking-tighter leading-none mb-2">THE FIRST <br>FRAME</h2>
                     <p class="text-blue-500 text-[9px] font-black tracking-[0.4em] uppercase">Where it all began</p>
@@ -123,7 +130,7 @@
 
              <div onclick="filterCollection('White')" class="reveal group relative h-96 rounded-3xl overflow-hidden cursor-pointer border-white/10 shadow-2xl" style="animation: revealUp 0.8s ease forwards; animation-delay: 0.4s; opacity:1;">
                 <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10"></div>
-                <img id="thumbWhite" src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-60">
+                <img id="thumbWhite" src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800" class="w-full h-full object-cover  transition-opacity duration-700 opacity-60">
                 <div class="absolute bottom-8 left-8 z-20">
                     <h2 class="text-4xl font-black italic tracking-tighter leading-none mb-2">THE WHITE COLLECTION<br> </h2>
                     <p class="text-blue-500 text-[9px] font-black tracking-[0.4em] uppercase">Elegance In Every Shade</p>
@@ -134,7 +141,7 @@
 
             <div onclick="filterCollection('Torch')" class="reveal group relative h-96 rounded-3xl overflow-hidden cursor-pointer border-white/10 shadow-2xl" style="animation: revealUp 0.8s ease forwards; animation-delay: 0.4s; opacity:1;">
                 <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10"></div>
-                <img id="thumbTorch" src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-60">
+                <img id="thumbTorch" src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800" class="w-full h-full object-cover  transition-opacity duration-700 opacity-60">
                 <div class="absolute bottom-8 left-8 z-20">
                     <h2 class="text-4xl font-black italic tracking-tighter leading-none mb-2">RECEIVING<br>THE TORCH</h2>
                     <p class="text-blue-500 text-[9px] font-black tracking-[0.4em] uppercase">Farewell Vibes</p>
@@ -143,7 +150,7 @@
 
              <div onclick="filterCollection('Festival')" class="reveal group relative h-96 rounded-3xl overflow-hidden cursor-pointer border-white/10 shadow-2xl" style="animation: revealUp 0.8s ease forwards; animation-delay: 0.4s; opacity:1;">
                 <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10"></div>
-                <img id="thumbFestival" src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-60">
+                <img id="thumbFestival" src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800" class="w-full h-full object-cover  transition-opacity duration-700 opacity-60">
                 <div class="absolute bottom-8 left-8 z-20">
                     <h2 class="text-4xl font-black italic tracking-tighter leading-none mb-2">FESTIVAL FLOW <br> </h2>
                     <p class="text-blue-500 text-[9px] font-black tracking-[0.4em] uppercase">Festive Memories</p>
@@ -155,7 +162,7 @@
 
             <div onclick="filterCollection('Traditional')" class="reveal group relative h-96 rounded-3xl overflow-hidden cursor-pointer border-white/10 shadow-2xl" style="animation: revealUp 0.8s ease forwards; animation-delay: 0.4s; opacity:1;">
                 <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10"></div>
-                <img id="thumbTraditional" src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-60">
+                <img id="thumbTraditional" src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800" class="w-full h-full object-cover  transition-opacity duration-700 opacity-60">
                 <div class="absolute bottom-8 left-8 z-20">
                     <h2 class="text-4xl font-black italic tracking-tighter leading-none mb-2">TRADITIONAL <br>  GALA </h2>
                     <p class="text-blue-500 text-[9px] font-black tracking-[0.4em] uppercase"> Frames Of Our Culture</p>
@@ -164,7 +171,7 @@
 
             <div onclick="filterCollection('Signature')" class="reveal group relative h-96 rounded-3xl overflow-hidden cursor-pointer border-white/10 shadow-2xl" style="animation: revealUp 0.8s ease forwards; opacity:1;">
                 <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10"></div>
-                <img id="thumbSignature" src="https://images.unsplash.com/photo-1523240715639-9538d0d810c2?auto=format&fit=crop&w=800" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-60">
+                <img id="thumbSignature" src="https://images.unsplash.com/photo-1523240715639-9538d0d810c2?auto=format&fit=crop&w=800" class="w-full h-full object-cover  transition-opacity duration-700 opacity-60">
                 <div class="absolute bottom-8 left-8 z-20">
                     <h2 class="text-4xl font-black italic tracking-tighter leading-none mb-2">SIGNATURE<br>DAY</h2>
                     <p class="text-blue-500 text-[9px] font-black tracking-[0.4em] uppercase">The Final Mark</p>
@@ -173,7 +180,7 @@
            
             <div onclick="filterCollection('Farewell')" class="reveal group relative h-96 rounded-3xl overflow-hidden cursor-pointer border-white/10 shadow-2xl" style="animation: revealUp 0.8s ease forwards; animation-delay: 0.4s; opacity:1;">
                 <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10"></div>
-                <img id="thumbFarewell" src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-60">
+                <img id="thumbFarewell" src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800" class="w-full h-full object-cover  transition-opacity duration-700 opacity-60">
                 <div class="absolute bottom-8 left-8 z-20">
                     <h2 class="text-4xl font-black italic tracking-tighter leading-none mb-2">FAREWELL<br>DAY</h2>
                     <p class="text-blue-500 text-[9px] font-black tracking-[0.4em] uppercase">The Last Goodbye</p>
