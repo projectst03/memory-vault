@@ -6,6 +6,7 @@
     <title>College Chronicles | Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Keep existing styles */
         .video-docker video {
             top: 50%; left: 50%; transform: translate(-50%, -50%);
             min-width: 100%; min-height: 100%; width: auto; height: auto; object-fit: cover;
@@ -17,198 +18,150 @@
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
+        
         #mainVideo {
-    width: 100%;
-    height: 100%;
-    min-height: 400px; /* Force minimum height */
-}
-/* Add this to your existing <style> */
-#mainVideo {
-    cursor: pointer;
-}
-.play-hint {
-    pointer-events: none;
-    transition: opacity 0.3s;
-}
-@keyframes blink {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(0.95); }
-}
+            width: 100%;
+            height: 100%;
+            min-height: 250px; /* Adjusted for mobile */
+            cursor: pointer;
+        }
+        
+        @keyframes blink { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.95); } }
+        .animate-blink { animation: blink 0.2s ease-in-out; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+        .animate-shake { animation: shake 0.3s ease-in-out; }
 
-.animate-blink {
-    animation: blink 0.2s ease-in-out;
-}
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-10px); }
-    75% { transform: translateX(10px); }
-}
-
-.animate-shake {
-    animation: shake 0.3s ease-in-out;
-}
-
+        /* New helper for mobile responsiveness */
+        body { overflow-x: hidden; width: 100%; }
     </style>
 </head>
-<body class="bg-black text-white font-sans overflow-hidden">
+<body class="bg-black text-white font-sans overflow-x-hidden">
 
-<div id="loginOverlay" class="fixed inset-0 z-[9999] flex items-center justify-center backdrop-blur-3xl bg-black/60 transition-opacity duration-1000 animate-fadeIn">
-    
-    <div id="glassBox" class="bg-white/5 p-12 rounded-[2rem] border border-white/10 shadow-2xl text-center backdrop-blur-lg transform transition-transform duration-1000 animate-slideUp">
-        
-       <div id="lockIcon" class="w-20 h-20 bg-blue-600 rounded-full mx-auto mb-8 flex items-center justify-center border-4 border-white/10 shadow-inner transition-all duration-300">
-    <span id="lockEmoji" class="text-white text-3xl">🔓</span>
-</div>
-        
-        <h2 class="text-white text-3xl font-bold mb-3 tracking-wide">Secure Access</h2>
-        <p class="text-blue-200/70 text-sm mb-10 max-w-xs">This area is restricted. Please enter the vault passcode to continue.</p>
-        
-        <input type="password" id="vaultPass" 
-            placeholder="••••••" 
-            class="w-full bg-white/5 p-4 rounded-xl text-white mb-6 text-center border-2 border-white/5 focus:outline-none focus:border-blue-500 focus:bg-white/10 transition-all duration-300 tracking-widest text-xl">
-        
-        <button onclick="unlockVault()" 
-        
-            class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-500 hover:scale-[1.03] active:scale-95 transition-all duration-300 shadow-md">
-            Authorize Entry
-            
-        </button>
-        
+<div id="loginOverlay" class="fixed inset-0 z-[9999] flex items-center justify-center backdrop-blur-3xl bg-black/60 transition-opacity duration-1000 animate-fadeIn p-4">
+    <div id="glassBox" class="bg-white/5 p-8 md:p-12 rounded-[2rem] border border-white/10 shadow-2xl text-center backdrop-blur-lg transform transition-transform duration-1000 animate-slideUp w-full max-w-md">
+       <div id="lockIcon" class="w-16 h-16 md:w-20 md:h-20 bg-blue-600 rounded-full mx-auto mb-6 md:mb-8 flex items-center justify-center border-4 border-white/10 shadow-inner transition-all duration-300">
+            <span id="lockEmoji" class="text-white text-2xl md:text-3xl">🔓</span>
+        </div>
+        <h2 class="text-white text-2xl md:text-3xl font-bold mb-3 tracking-wide">Secure Access</h2>
+        <p class="text-blue-200/70 text-xs md:text-sm mb-8 md:mb-10 max-w-xs mx-auto">This area is restricted. Please enter the vault passcode to continue.</p>
+        <input type="password" id="vaultPass" placeholder="••••••" class="w-full bg-white/5 p-4 rounded-xl text-white mb-6 text-center border-2 border-white/5 focus:outline-none focus:border-blue-500 focus:bg-white/10 transition-all duration-300 tracking-widest text-xl">
+        <button onclick="unlockVault()" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-500 hover:scale-[1.03] active:scale-95 transition-all duration-300 shadow-md">Authorize Entry</button>
         <p id="errorMsg" class="mt-6 text-red-500/50 text-xs hidden uppercase tracking-widest animate-pulse">Access Denied - Try Again</p>
     </div>
 </div>
 
+<section class="relative h-screen flex flex-col items-center justify-center text-center overflow-hidden">
+    <div class="video-docker absolute top-0 left-0 w-full h-full">
+        <video class="min-w-full min-h-full absolute object-cover" src="https://assets.mixkit.co/videos/preview/mixkit-group-of-friends-walking-in-a-university-campus-4444-large.mp4" autoplay muted loop playsinline></video>
+    </div>
+    <div class="video-overlay absolute top-0 left-0 w-full h-full z-10"></div>
 
-    <section class="relative h-screen flex flex-col items-center justify-center text-center">
-        <div class="video-docker absolute top-0 left-0 w-full h-full overflow-hidden">
-            <video class="min-w-full min-h-full absolute object-cover" 
-                   src="https://assets.mixkit.co/videos/preview/mixkit-group-of-friends-walking-in-a-university-campus-4444-large.mp4" 
-                   autoplay muted loop playsinline></video>
-        </div>
+    <nav class="absolute top-0 w-full p-6 md:p-8 z-30 flex flex-wrap justify-center gap-4 md:gap-10 text-[10px] md:text-xs uppercase tracking-widest font-bold">
+        <a href="index.html" class="text-blue-400 border-b border-blue-400 pb-1">Home</a>
+        <a href="gallery.html" class="hover:text-blue-300 transition">Gallery</a>
+        <a href="TimeLessVibe.html" class="hover:text-blue-300 transition">TimeLessVibe</a>
+        <a href="videos.html" class="hover:text-blue-300 transition">Videos</a>
+    </nav>
 
-        <div class="video-overlay absolute top-0 left-0 w-full h-full z-10"></div>
+    <div class="relative z-20 px-6">
+        <h1 class="text-4xl md:text-8xl font-black mb-4 md:mb-6 tracking-tighter italic">
+            MEMORIES <span class="text-blue-500">LIVE</span> FOREVER
+        </h1>
+        <p class="text-lg md:text-3xl italic font-serif leading-relaxed mb-8 md:mb-12 bg-gradient-to-r from-blue-200 via-white to-blue-200 bg-clip-text text-transparent opacity-90 mx-auto max-w-3xl">
+            "Captures the laughter, the hustle, and the unforgettable nights of college life."
+        </p>
 
-        <nav class="absolute top-0 w-full p-8 z-30 flex justify-center gap-10 text-xs uppercase tracking-widest font-bold">
-            <a href="index.html" class="text-blue-400 border-b border-blue-400 pb-1">Home</a>
-            <a href="gallery.html" class="hover:text-blue-300 transition">Gallery</a>
-            <a href="TimeLessVibe.html" class="hover:text-blue-300 transition">TimeLessVibe</a>
-            <a href="videos.html" class="hover:text-blue-300 transition">Videos</a>
-        </nav>
-
-        <div class="relative z-20 px-4">
-            <h1 class="text-6xl md:text-8xl font-black mb-6 tracking-tighter italic">
-                MEMORIES <span class="text-blue-500">LIVE</span> FOREVER
-            </h1>
-            <p class="text-xl md:text-3xl italic font-serif leading-relaxed mb-12 bg-gradient-to-r from-blue-200 via-white to-blue-200 bg-clip-text text-transparent opacity-90 mx-auto max-w-3xl">
-                "Captures the laughter, the hustle, and the unforgettable nights of college life."
-            </p>
-
-            <div class="flex flex-col items-center justify-center mt-8">
-                <div class="h-[1px] w-24 bg-gradient-to-r from-transparent via-blue-500 to-transparent mb-4"></div>
-                <div class="text-center">
-                    <span class="block text-blue-400 uppercase tracking-[0.4em] text-xs font-bold mb-2">The Golden Batch</span>
-                    <h2 class="text-4xl md:text-5xl font-light tracking-widest text-white">2022 <span class="text-blue-500 mx-2">—</span> 2026</h2>
-                </div>
-                <div class="mt-12 group">
-                    <button onclick="playCollegeVideo()" class="relative overflow-hidden px-14 py-4 rounded-full border border-white/20 bg-white/5 backdrop-blur-md transition-all duration-700 hover:border-blue-500 hover:bg-blue-600/10 hover:shadow-[0_0_50px_rgba(59,130,246,0.3)]">
-                        <div class="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-blue-500/10 to-transparent -translate-x-full group-hover:animate-[scan_2s_infinite]"></div>
-                        <div class="relative z-10 flex items-center gap-6">
-                            <span class="text-[10px] uppercase tracking-[0.8em] font-bold text-white transition-colors group-hover:text-blue-400">Explore Moments</span>
-                            <div class="flex items-end gap-[3px] h-4">
-                                <div class="w-[1.5px] bg-blue-500/50 group-hover:bg-blue-400 animate-[bar_1.2s_infinite_0.1s]"></div>
-                                <div class="w-[1.5px] bg-blue-500/50 group-hover:bg-blue-400 animate-[bar_1.2s_infinite_0.3s]"></div>
-                                <div class="w-[1.5px] bg-blue-500/50 group-hover:bg-blue-400 animate-[bar_1.2s_infinite_0.5s]"></div>
-                            </div>
+        <div class="flex flex-col items-center justify-center mt-4">
+            <div class="h-[1px] w-16 md:w-24 bg-gradient-to-r from-transparent via-blue-500 to-transparent mb-4"></div>
+            <div class="text-center">
+                <span class="block text-blue-400 uppercase tracking-[0.4em] text-[10px] font-bold mb-2">The Golden Batch</span>
+                <h2 class="text-3xl md:text-5xl font-light tracking-widest text-white">2022 <span class="text-blue-500 mx-2">—</span> 2026</h2>
+            </div>
+            <div class="mt-8 md:mt-12 group">
+                <button onclick="playCollegeVideo()" class="relative overflow-hidden px-10 md:px-14 py-3 md:py-4 rounded-full border border-white/20 bg-white/5 backdrop-blur-md transition-all duration-700 hover:border-blue-500 hover:bg-blue-600/10">
+                    <div class="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-blue-500/10 to-transparent -translate-x-full group-hover:animate-[scan_2s_infinite]"></div>
+                    <div class="relative z-10 flex items-center gap-4 md:gap-6">
+                        <span class="text-[9px] md:text-[10px] uppercase tracking-[0.8em] font-bold text-white">Explore Moments</span>
+                        <div class="flex items-end gap-[3px] h-4">
+                            <div class="w-[1.5px] bg-blue-500/50 animate-[bar_1.2s_infinite_0.1s]"></div>
+                            <div class="w-[1.5px] bg-blue-500/50 animate-[bar_1.2s_infinite_0.3s]"></div>
+                            <div class="w-[1.5px] bg-blue-500/50 animate-[bar_1.2s_infinite_0.5s]"></div>
                         </div>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div id="videoModal" class="fixed inset-0 z-[100] hidden bg-black/95 backdrop-blur-2xl flex items-center justify-center p-4 md:p-8">
-        <button onclick="closeCollegeVideo()" class="absolute top-6 right-6 text-white/50 hover:text-white text-5xl transition-all z-[120]">&times;</button>
-        <div class="w-full max-w-7xl flex flex-col md:flex-row gap-6 h-[85vh]">
-            <div class="flex-grow bg-black rounded-3xl overflow-hidden shadow-2xl relative flex flex-col">
-               <div class="flex-grow relative bg-black flex items-center justify-center overflow-hidden h-full">
-    
-    <div id="videoContainer" class="w-full h-full flex items-center justify-center">
-        <video id="mainVideo" class="max-w-full max-h-full object-contain" controls playsinline>
-        </video>
-    </div>
-
-</div>
-                <div class="p-6 bg-white/5 border-t border-white/10 flex items-center justify-between">
-                    <div>
-                        <h3 id="videoTitle" class="text-2xl font-bold text-blue-400 font-serif italic">Select a Playlist</h3>
-                        <p id="videoDesc" class="text-gray-400 text-sm mt-1">Batch of 2022 - 2026 Archive</p>
                     </div>
-                </div>
-            </div>
-
-            <div class="w-full md:w-80 flex flex-col gap-4 overflow-y-auto pr-2 custom-scrollbar">
-                <h4 class="text-xs uppercase tracking-widest text-gray-500 font-bold mb-2">Playlist</h4>
-                
-               
-
-           
+                </button>
             </div>
         </div>
     </div>
+</section>
 
-  <script>
+<div id="videoModal" class="fixed inset-0 z-[100] hidden bg-black/95 backdrop-blur-2xl flex items-center justify-center p-4 md:p-8">
+    <button onclick="closeCollegeVideo()" class="absolute top-4 right-4 md:top-6 md:right-6 text-white/50 hover:text-white text-4xl md:text-5xl transition-all z-[120]">&times;</button>
+    
+    <div class="w-full max-w-7xl flex flex-col md:flex-row gap-6 h-full md:h-[85vh] py-12 md:py-0">
+        <div class="flex-grow bg-black rounded-3xl overflow-hidden shadow-2xl relative flex flex-col min-h-[300px] md:min-h-0">
+            <div id="videoContainer" class="flex-grow relative bg-black flex items-center justify-center overflow-hidden">
+                <video id="mainVideo" class="max-w-full max-h-full object-contain" controls playsinline></video>
+            </div>
+            <div class="p-4 md:p-6 bg-white/5 border-t border-white/10">
+                <h3 id="videoTitle" class="text-xl md:text-2xl font-bold text-blue-400 font-serif italic">Select a Playlist</h3>
+                <p id="videoDesc" class="text-gray-400 text-xs md:text-sm mt-1">Batch of 2022 - 2026 Archive</p>
+            </div>
+        </div>
+
+        <div class="w-full md:w-80 flex flex-col gap-4 overflow-y-auto pr-2 custom-scrollbar max-h-[300px] md:max-h-full">
+            <h4 class="text-xs uppercase tracking-widest text-gray-500 font-bold mb-2">Playlist</h4>
+            <div id="playlistItems" class="flex flex-col gap-4">
+                </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Keeping all your existing logic exactly as provided
     const modal = document.getElementById('videoModal');
 
-    // 1. DYNAMIC SYNC
     async function syncDriveFolder() {
         const webAppUrl = 'https://script.google.com/macros/s/AKfycbx1SUX2K3htbVDQUuhQj1GE0T76_e0Es6xSALTnNme1Dh1hKyy8_zEFeqhML0_tFAdy/exec'; 
         try {
             const response = await fetch(webAppUrl);
             const data = await response.json();
-            const container = document.querySelector('.custom-scrollbar');
-            const header = container.querySelector('h4');
+            const container = document.getElementById('playlistItems');
             container.innerHTML = '';
-            container.appendChild(header);
             
-          // Locate this block in your syncDriveFolder function:
-data.forEach(item => {
-    const div = document.createElement('div');
-    div.className = "playlist-item group cursor-pointer bg-white/5 border border-white/10 p-3 rounded-xl hover:bg-blue-600/20 hover:border-blue-500/50 transition-all";
-    div.onclick = () => changeVideo(item.id, item.name);
-    
-    div.innerHTML = `
-        <div class="aspect-video bg-gray-800 rounded-lg overflow-hidden relative">
-            <img src="https://drive.google.com/thumbnail?id=${item.id}" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity">
-            <div class="absolute inset-0 flex items-center justify-center">
-                <span class="text-white/40 group-hover:text-white transition-colors text-xl">▶</span>
-            </div>
-        </div>
-    `;
-    container.appendChild(div);
-});
+            data.forEach(item => {
+                const div = document.createElement('div');
+                div.className = "playlist-item group cursor-pointer bg-white/5 border border-white/10 p-3 rounded-xl hover:bg-blue-600/20 hover:border-blue-500/50 transition-all";
+                div.onclick = () => changeVideo(item.id, item.name);
+                
+                div.innerHTML = `
+                    <div class="aspect-video bg-gray-800 rounded-lg overflow-hidden relative">
+                        <img src="https://drive.google.com/thumbnail?id=${item.id}" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-white/40 group-hover:text-white transition-colors text-xl">▶</span>
+                        </div>
+                    </div>
+                    <p class="text-[10px] text-gray-400 mt-2 truncate">${item.name}</p>
+                `;
+                container.appendChild(div);
+            });
         } catch (e) { console.log("Sync error:", e); }
     }
 
-    // 2. FIXED SELECTION LOGIC
- function changeVideo(driveId, title) {
-    const container = document.getElementById('videoContainer');
-    
-    // 1. Hide the footer container (the div containing your titles)
-    // We target the parent of the parent of the title element
-    const titleContainer = document.getElementById('videoTitle').parentElement.parentElement;
-    titleContainer.classList.add('hidden');
-    
-    // 2. Clear and create the video player
-    container.innerHTML = ''; 
-    const newIframe = document.createElement('iframe');
-    newIframe.src = `https://drive.google.com/file/d/${driveId}/preview`;
-    newIframe.className = "w-full h-full border-0";
-    newIframe.setAttribute('allow', 'autoplay');
-    newIframe.setAttribute('allowfullscreen', 'true');
-    
-    container.appendChild(newIframe);
-}
-    // 3. UPDATED MODAL CONTROLS
+    function changeVideo(driveId, title) {
+        const container = document.getElementById('videoContainer');
+        const titleContainer = document.getElementById('videoTitle').parentElement.parentElement;
+        titleContainer.classList.add('hidden');
+        
+        container.innerHTML = ''; 
+        const newIframe = document.createElement('iframe');
+        newIframe.src = `https://drive.google.com/file/d/${driveId}/preview`;
+        newIframe.className = "w-full h-full border-0";
+        newIframe.setAttribute('allow', 'autoplay');
+        newIframe.setAttribute('allowfullscreen', 'true');
+        
+        container.appendChild(newIframe);
+    }
+
     function playCollegeVideo() {
         modal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
@@ -219,82 +172,58 @@ data.forEach(item => {
     function closeCollegeVideo() {
         modal.classList.add('hidden');
         document.body.style.overflow = 'auto';
-        // Clear container to stop playback
         document.getElementById('videoContainer').innerHTML = '';
     }
 
     window.addEventListener('load', syncDriveFolder);
-    const passwordInput = document.getElementById('vaultPass');
-const lockEmoji = document.getElementById('lockEmoji');
-const lockIcon = document.getElementById('lockIcon');
 
-passwordInput.addEventListener('input', () => {
-    if (passwordInput.value.length > 0) {
-        // Close eyes/Lock
-        lockEmoji.innerText = '🙈';
-        lockIcon.classList.add('bg-blue-800'); // Slightly darker when locked
-    } else {
-        // Open eyes/Unlock
-        lockEmoji.innerText = '🐵';
-        lockIcon.classList.remove('bg-blue-800');
-    }
-});
-function unlockVault() {
-    const pass = document.getElementById('vaultPass').value;
-    const overlay = document.getElementById('loginOverlay');
-    const glassBox = document.getElementById('glassBox');
-    const errorMsg = document.getElementById('errorMsg');
+    // Password logic
+    const passwordInput = document.getElementById('vaultPass');
     const lockEmoji = document.getElementById('lockEmoji');
     const lockIcon = document.getElementById('lockIcon');
-    
-    // REPLACE WITH YOUR ACTUAL PASSWORD
-    const correctPassword = "UnWrittenChapters"; 
 
-   if (pass === correctPassword) {
-        // SUCCESS STATE
-        const lockEmoji = document.getElementById('lockEmoji');
-        const lockIcon = document.getElementById('lockIcon');
+    passwordInput.addEventListener('input', () => {
+        lockEmoji.innerText = passwordInput.value.length > 0 ? '🙈' : '🐵';
+    });
+
+    function unlockVault() {
+        const pass = document.getElementById('vaultPass').value;
+        const overlay = document.getElementById('loginOverlay');
+        const glassBox = document.getElementById('glassBox');
+        const errorMsg = document.getElementById('errorMsg');
         
-        // 1. Change to monkey with open eyes
-        lockEmoji.innerText = '🐵'; 
-        lockIcon.classList.add('animate-blink', 'bg-green-700'); // Optional: turn green on success
-        sessionStorage.setItem('isVaultOpen', 'true');
-        
-        // 2. Wait 800ms so they see the open-eyed monkey, THEN fade out
-        setTimeout(() => {
-            overlay.classList.add('opacity-0');
-            overlay.classList.add('pointer-events-none');
-            glassBox.classList.add('translate-y-10');
+        const correctPassword = "UnWrittenChapters"; 
+
+       if (pass === correctPassword) {
+            lockEmoji.innerText = '🐵'; 
+            lockIcon.classList.add('animate-blink', 'bg-green-700');
+            sessionStorage.setItem('isVaultOpen', 'true');
             
-            setTimeout(() => { 
-                overlay.style.display = 'none'; 
-            }, 500);
-        }, 800);
-        
-    } else {
-        // ERROR STATE
-        errorMsg.classList.remove('hidden');
-        document.getElementById('vaultPass').value = '';
-        
-        // Change icon to Security Alert
-        lockEmoji.innerText = '⚠️';
-        lockIcon.classList.add('animate-shake', 'bg-red-900'); // Shake and turn red
-        
-        // Reset icon after 1 second
-        setTimeout(() => {
-            lockIcon.classList.remove('animate-shake', 'bg-red-900');
-            lockEmoji.innerText = '🔒'; // Back to locked
-        }, 1000);
+            setTimeout(() => {
+                overlay.classList.add('opacity-0');
+                overlay.classList.add('pointer-events-none');
+                glassBox.classList.add('translate-y-10');
+                setTimeout(() => { overlay.style.display = 'none'; }, 500);
+            }, 800);
+        } else {
+            errorMsg.classList.remove('hidden');
+            passwordInput.value = '';
+            lockEmoji.innerText = '⚠️';
+            lockIcon.classList.add('animate-shake', 'bg-red-900');
+            setTimeout(() => {
+                lockIcon.classList.remove('animate-shake', 'bg-red-900');
+                lockEmoji.innerText = '🔒';
+            }, 1000);
+        }
     }
-}
-// Keep the vault open if already authenticated
-if (sessionStorage.getItem('isVaultOpen') === 'true') {
-    document.getElementById('loginOverlay').style.display = 'none';
-}
+
+    if (sessionStorage.getItem('isVaultOpen') === 'true') {
+        document.getElementById('loginOverlay').style.display = 'none';
+    }
 </script>
 
-    <div class="absolute bottom-10 z-20 w-full text-center opacity-50 text-xs uppercase tracking-[0.5em]">
-        Batch 2022-2026 • The Journey Continues
-    </div>
+<div class="absolute bottom-6 md:bottom-10 z-20 w-full text-center opacity-50 text-[8px] md:text-xs uppercase tracking-[0.3em] md:tracking-[0.5em] px-4">
+    Batch 2022-2026 • The Journey Continues
+</div>
 </body>
-</html>
+    </html>
