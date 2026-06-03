@@ -95,72 +95,77 @@
     
     
     
-  /* =======================================================
-   STRUCTURAL & PLACEMENT RESET (Matches Index.html Flow)
+ /* =======================================================
+   PRECISION PLACEMENT & ALIGNMENT TUNING (Mobile Viewport)
    ======================================================= */
 @media screen and (max-width: 768px) {
-    /* Step 1: Fix the parent container wrapper if it's compressing layout components */
-    body, section {
+    /* Step 1: Force parent layout mechanics to honor index.html centering */
+    body, section, .relative {
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
-        justify-content: flex-start !important;
+        text-align: center !important;
         width: 100% !important;
-        min-height: 100vh !important;
     }
 
-    /* Step 2: Exact structural placement override for the Navigation component */
+    /* Step 2: Perfect matching position, padding, and layout bounds */
     nav, .nav-zone {
-        /* Reset positioning context to match index.html sticky layout flow */
         position: sticky !important;
         top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
         z-index: 50 !important;
         
-        /* Force full-width block alignment layout */
+        /* Forces identical dimensions to index.html p-4 and gap-4 */
         width: 100% !important;
         max-width: 100vw !important;
-        box-sizing: border-box !important;
+        padding: 1rem !important;  /* Strict p-4 match */
+        gap: 1rem !important;      /* Strict gap-4 match */
         
-        /* Exact spacing parameters cloned from Index code layout */
-        padding: 1rem !important; /* Emulates p-4 on phone screens */
-        gap: 1rem !important;     /* Emulates gap-4 layout spacing */
-        
-        /* Flexbox alignment mechanics precisely cloned from Index layout */
+        /* Flex positioning fixes to avoid layout shifts or compression */
         display: flex !important;
         flex-direction: row !important;
         flex-wrap: wrap !important;
         justify-content: center !important;
         align-items: center !important;
-        text-align: center !important;
-
-        /* Visual styling properties matching Index navbar backdrop */
-        background-color: rgba(0, 0, 0, 0.8) !important; /* bg-black/80 */
-        backdrop-filter: blur(20px) !important;           /* backdrop-blur-xl */
+        
+        /* Visual identity match from index.html source */
+        background-color: rgba(0, 0, 0, 0.8) !important;
+        backdrop-filter: blur(20px) !important;
         -webkit-backdrop-filter: blur(20px) !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important; /* border-b border-white/5 */
         
-        /* Erase any desktop margin displacements */
-        margin: 0 unset 1rem unset !important;
+        /* Kill accidental margins keeping it from stretching seamlessly */
+        margin: 0 !important;
+        box-sizing: border-box !important;
     }
 
-    /* Step 3: Hyperlink Layout & Alignment Tuning */
+    /* Step 3: Exact button height alignment and line-spacing matching index text rules */
     nav a, .nav-zone a {
         font-size: 10px !important;              /* text-[10px] */
         font-weight: 700 !important;             /* font-bold */
         text-transform: uppercase !important;    /* uppercase */
         letter-spacing: 0.1em !important;        /* tracking-widest */
-        white-space: nowrap !important;          /* Keeps titles single-lined */
-        padding: 0 2px 4px 2px !important;       /* Space for border alignment */
-        display: inline-block !important;
+        white-space: nowrap !important;          /* Keeps items cleanly on one line */
+        
+        /* Precision alignment spacing matching padding tweaks on your index pages */
+        padding-top: 0.25rem !important;
+        padding-bottom: 0.25rem !important;
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+        margin: 0 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
 
-    /* Step 4: Fix main content container below navbar placement */
+    /* Step 4: Fix layout spacing directly beneath the navigation element */
     main {
+        margin-top: 0.5rem !important;
+        padding-left: 1.5rem !important;   /* px-6 */
+        padding-right: 1.5rem !important;  /* px-6 */
+        padding-top: 2.5rem !important;    /* py-10 */
         width: 100% !important;
-        max-width: 7xl !important;
-        padding-left: 1.5rem !important;  /* px-6 */
-        padding-right: 1.5rem !important; /* px-6 */
-        padding-top: 2.5rem !important;   /* py-10 */
         box-sizing: border-box !important;
     }
 }
