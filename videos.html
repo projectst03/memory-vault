@@ -41,6 +41,8 @@
         #loginOverlay { display: none !important; }
 
         header {
+            padding-top: 5vh !important;
+            margin-bottom: 6rem !important;
             opacity: 0; 
             transition: opacity 1.5s ease-in-out; 
         }
@@ -120,20 +122,20 @@
     <div id="mainVault" style="display: block;">
         <canvas id="bg-canvas"></canvas>
 
-        <nav class="w-full p-6 sm:p-8 flex justify-center gap-6 sm:gap-10 text-[10px] sm:text-xs uppercase tracking-widest font-bold sticky top-0 bg-black/50 backdrop-blur-md z-30">
+        <nav class="absolute top-0 w-full p-8 z-30 flex justify-center gap-10 text-xs uppercase tracking-widest font-bold">
             <a href="index.html" class="hover:text-blue-300 transition">Home</a>
             <a href="gallery.html" class="hover:text-blue-300 transition">Gallery</a>
             <a href="TimeLessVibe.html" class="hover:text-blue-300 transition">TimeLessVibe</a>
             <a href="videos.html" class="text-blue-400 border-b border-blue-400 pb-1">Videos</a>
         </nav>
 
-        <main class="max-w-7xl mx-auto px-6 py-12 sm:py-20 relative z-10">
-            <header class="text-center mb-12 sm:mb-24">
+        <main class="max-w-7xl mx-auto px-6 py-20 relative z-10">
+            <header class="text-center">
                 <div class="inline-block transform transition-transform duration-500 hover:scale-105">
-                    <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black italic mb-4 uppercase leading-none tracking-tighter">
+                    <h1 class="text-5xl sm:text-6xl md:text-7xl font-black italic mb-4 uppercase leading-none tracking-tighter">
                         UN<span class="text-blue-500">WRITTEN</span>CHAPTERS
                     </h1>
-                    <p id="vaultSubtitle" class="text-gray-500 uppercase tracking-[0.3em] sm:tracking-[0.5em] text-[9px] sm:text-[10px] font-bold">2022-2026 MOMENTS</p>
+                    <p id="vaultSubtitle" class="text-gray-500 uppercase tracking-[0.5em] text-[10px] font-bold">2022-2026 MOMENTS</p>
                 </div>
             </header>
 
@@ -233,8 +235,8 @@
                     
                     filtered.forEach((item) => {
                         const action = `openPlayer('${item.driveId}', '${item.title}')`;
-                        // FIXED: Corrected the broken string literal syntax here
-                        const thumbSrc = `https://lh3.googleusercontent.com/d/${item.driveId}=w600`;
+                        // FIXED: Added missing template string symbol ($) so grid thumbnails process natively
+                        const thumbSrc = `http://googleusercontent.com/profile/picture/${item.driveId}=w600`;
                         
                         grid.innerHTML += `
                             <div onclick="${action}" class="folder-card p-3 rounded-[2.5rem] cursor-pointer group overflow-hidden transition-all duration-500 hover:scale-[1.02]">
