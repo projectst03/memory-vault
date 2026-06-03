@@ -203,9 +203,9 @@
             </div>
 
             <div class="flex-1 flex items-center justify-center p-2 sm:p-4 md:p-8 w-full max-w-4xl mx-auto">
-                <div id="playerContainer" class="w-full h-[50vh] md:h-auto md:aspect-video relative rounded-[1rem] md:rounded-[2rem] shadow-2xl border border-white/10 overflow-hidden bg-black">
-                </div>
-            </div>
+    <div id="playerContainer" class="w-full aspect-video relative rounded-[1rem] md:rounded-[2rem] shadow-2xl border border-white/10 overflow-hidden bg-black">
+        </div>
+</div>
         </div>
     </div>
 
@@ -308,26 +308,29 @@
             }
         }
 
-        function openPlayer(driveId, title) {
-            const lightbox = document.getElementById('videoLightbox');
-            const playerContainer = document.getElementById('playerContainer');
-            
-            playerContainer.innerHTML = '';
-            const embedUrl = `https://drive.google.com/file/d/${driveId}/preview`;
-            
-            const iframe = document.createElement('iframe');
-            iframe.src = embedUrl;
-            
-            /* FIXED: Standardized to absolute fill inside our smart-proportioned container parent */
-            iframe.className = "absolute inset-0 w-full h-full border-0";
-            
-            iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
-            iframe.setAttribute('allowfullscreen', 'true');
-            
-            playerContainer.appendChild(iframe);
-            lightbox.classList.remove('invisible', 'opacity-0');
-            document.body.style.overflow = 'hidden';
-        }
+    function openPlayer(driveId, title) {
+    const lightbox = document.getElementById('videoLightbox');
+    const playerContainer = document.getElementById('playerContainer');
+    
+    playerContainer.innerHTML = '';
+    const embedUrl = `https://drive.google.com/file/d/${driveId}/preview`;
+    
+    const iframe = document.createElement('iframe');
+    iframe.src = embedUrl;
+    
+    // THE CROP HACK: Shifts the iframe up to mask the top options bar out of view,
+    // while keeping the bottom bar accessible for changing video quality.
+    iframe.className = "absolute left-0 w-full border-0";
+    iframe.style.top = "-60px"; 
+    iframe.style.height = "calc(100% + 60px)"; 
+    
+    iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
+    iframe.setAttribute('allowfullscreen', 'true');
+    
+    playerContainer.appendChild(iframe);
+    lightbox.classList.remove('invisible', 'opacity-0');
+    document.body.style.overflow = 'hidden';
+}
 
         function closePlayer() {
             const lightbox = document.getElementById('videoLightbox');
