@@ -6,37 +6,53 @@
     <title>College Chronicles | Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Keep existing styles */
-        .video-docker video {
-            top: 50%; left: 50%; transform: translate(-50%, -50%);
-            min-width: 100%; min-height: 100%; width: auto; height: auto; object-fit: cover;
-        }
-        .video-overlay { background: rgba(0, 0, 0, 0.6); }
-        @keyframes scan { 0% { transform: translateX(-100%) skewX(-15deg); } 100% { transform: translateX(200%) skewX(-15deg); } }
-        @keyframes bar { 0%, 100% { height: 4px; opacity: 0.3; } 50% { height: 16px; opacity: 1; } }
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
-        
-        #mainVideo {
-            width: 100%;
-            height: 100%;
-            min-height: 250px; /* Adjusted for mobile */
-            cursor: pointer;
-        }
-        
-        @keyframes blink { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.95); } }
-        .animate-blink { animation: blink 0.2s ease-in-out; }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
-        .animate-shake { animation: shake 0.3s ease-in-out; }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;900&display=swap');
+    
+    body { 
+        font-family: 'Inter', sans-serif; 
+            background-color: #000; color: white;
+            -webkit-user-select: none; user-select: none;
+    }
+.custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.4); border-radius: 10px; }
+    nav {
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+    }
+    
+    .video-docker video {
+        top: 50%; left: 50%; transform: translate(-50%, -50%);
+        min-width: 100%; min-height: 100%; width: auto; height: auto; object-fit: cover;
+    }
+    .video-overlay { background: rgba(0, 0, 0, 0.6); }
+    @keyframes scan { 0% { transform: translateX(-100%) skewX(-15deg); } 100% { transform: translateX(200%) skewX(-15deg); } }
+    @keyframes bar { 0%, 100% { height: 4px; opacity: 0.3; } 50% { height: 16px; opacity: 1; } }
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
+    
+    #mainVideo {
+        width: 100%;
+        height: 100%;
+        min-height: 250px; 
+        cursor: pointer;
+    }
+    
+    @keyframes blink { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.95); } }
+    .animate-blink { animation: blink 0.2s ease-in-out; }
+    @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+    .animate-shake { animation: shake 0.3s ease-in-out; }
 
-        /* New helper for mobile responsiveness */
-        body { overflow-x: hidden; width: 100%; }
+    body { overflow-x: hidden; width: 100%; }
     </style>
 </head>
-<body class="bg-black text-white font-sans overflow-x-hidden">
-
+<body class="custom-scrollbar overflow-x-hidden">
+  
+   
+ 
+    
+  
 <div id="loginOverlay" class="fixed inset-0 z-[9999] flex items-center justify-center backdrop-blur-3xl bg-black/60 transition-opacity duration-1000 animate-fadeIn p-4">
     <div id="glassBox" class="bg-white/5 p-8 md:p-12 rounded-[2rem] border border-white/10 shadow-2xl text-center backdrop-blur-lg transform transition-transform duration-1000 animate-slideUp w-full max-w-md">
        <div id="lockIcon" class="w-16 h-16 md:w-20 md:h-20 bg-blue-600 rounded-full mx-auto mb-6 md:mb-8 flex items-center justify-center border-4 border-white/10 shadow-inner transition-all duration-300">
@@ -45,43 +61,47 @@
         <h2 class="text-white text-2xl md:text-3xl font-bold mb-3 tracking-wide">Secure Access</h2>
         <p class="text-blue-200/70 text-xs md:text-sm mb-8 md:mb-10 max-w-xs mx-auto">This area is restricted. Please enter the vault passcode to continue.</p>
         <input type="password" id="vaultPass" placeholder="••••••" class="w-full bg-white/5 p-4 rounded-xl text-white mb-6 text-center border-2 border-white/5 focus:outline-none focus:border-blue-500 focus:bg-white/10 transition-all duration-300 tracking-widest text-xl">
-        <button onclick="unlockVault()" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-500 hover:scale-[1.03] active:scale-95 transition-all duration-300 shadow-md">Authorize Entry</button>
+        <button onclick="unlockVault()" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-500 transition-all duration-300 shadow-md">Authorize Entry</button>
         <p id="errorMsg" class="mt-6 text-red-500/50 text-xs hidden uppercase tracking-widest animate-pulse">Access Denied - Try Again</p>
     </div>
 </div>
-
-<section class="relative h-screen flex flex-col items-center justify-center text-center overflow-hidden">
+<section class="relative min-h-[calc(100vh-80px)] flex flex-col items-center justify-center text-center overflow-hidden flex-grow px-4">
     <div class="video-docker absolute top-0 left-0 w-full h-full">
         <video class="min-w-full min-h-full absolute object-cover" src="https://assets.mixkit.co/videos/preview/mixkit-group-of-friends-walking-in-a-university-campus-4444-large.mp4" autoplay muted loop playsinline></video>
     </div>
     <div class="video-overlay absolute top-0 left-0 w-full h-full z-10"></div>
 
-    <nav class="absolute top-0 w-full p-6 md:p-8 z-30 flex flex-wrap justify-center gap-4 md:gap-10 text-[10px] md:text-xs uppercase tracking-widest font-bold">
+    <nav class="p-8 flex justify-center gap-10 text-xs uppercase tracking-widest font-bold border-b border-white/5 bg-black/80 backdrop-blur-xl sticky top-0 z-50">
         <a href="index.html" class="text-blue-400 border-b border-blue-400 pb-1">Home</a>
-        <a href="gallery.html" class="hover:text-blue-300 transition">Gallery</a>
-        <a href="TimeLessVibe.html" class="hover:text-blue-300 transition">TimeLessVibe</a>
+        <a href="gallery.html" class="hover:text-blue-400 transition">Gallery</a>
+        <a href="TimeLessVibe.html" class="hover:text-blue-400 transition">TimeLessVibe</a>
         <a href="videos.html" class="hover:text-blue-300 transition">Videos</a>
     </nav>
 
-    <div class="relative z-20 px-6">
-        <h1 class="text-4xl md:text-8xl font-black mb-4 md:mb-6 tracking-tighter italic">
-            MEMORIES <span class="text-blue-500">LIVE</span> FOREVER
-        </h1>
-        <p class="text-lg md:text-3xl italic font-serif leading-relaxed mb-8 md:mb-12 bg-gradient-to-r from-blue-200 via-white to-blue-200 bg-clip-text text-transparent opacity-90 mx-auto max-w-3xl">
-            "Captures the laughter, the hustle, and the unforgettable nights of college life."
-        </p>
 
-        <div class="flex flex-col items-center justify-center mt-4">
+ 
+
+    <main class="max-w-7xl mx-auto px-6 py-10 relative z-10">
+        <header class="text-center w-full">
+           <h1 class="text-7xl md:text-7.9xl font-black tracking-tighter italic mb-4 uppercase leading-none">
+                MEMORIES <span class="text-blue-500">LIVE</span> FOREVER
+            </h1>
+            <p class="text-base md:text-2xl italic font-serif leading-relaxed mb-8 md:mb-12 bg-gradient-to-r from-blue-200 via-white to-blue-200 bg-clip-text text-transparent opacity-90 mx-auto max-w-3xl px-2">
+                "Captures the laughter, the hustle, and the unforgettable nights of college life."
+            </p>
+        </header>
+
+        <div class="flex flex-col items-center justify-center mt-4 w-full">
             <div class="h-[1px] w-16 md:w-24 bg-gradient-to-r from-transparent via-blue-500 to-transparent mb-4"></div>
             <div class="text-center">
                 <span class="block text-blue-400 uppercase tracking-[0.4em] text-[10px] font-bold mb-2">The Golden Batch</span>
-                <h2 class="text-3xl md:text-5xl font-light tracking-widest text-white">2022 <span class="text-blue-500 mx-2">—</span> 2026</h2>
+                <h2 class="text-2xl md:text-5xl font-light tracking-widest text-white">2022 <span class="text-blue-500 mx-2">—</span> 2026</h2>
             </div>
-            <div class="mt-8 md:mt-12 group">
-                <button onclick="playCollegeVideo()" class="relative overflow-hidden px-10 md:px-14 py-3 md:py-4 rounded-full border border-white/20 bg-white/5 backdrop-blur-md transition-all duration-700 hover:border-blue-500 hover:bg-blue-600/10">
+            <div class="mt-8 md:mt-12 group w-full max-w-xs md:max-w-none px-4">
+                <button onclick="playCollegeVideo()" class="w-full md:w-auto relative overflow-hidden px-6 md:px-14 py-3 md:py-4 rounded-full border border-white/20 bg-white/5 backdrop-blur-md transition-all duration-700 hover:border-blue-500 hover:bg-blue-600/10">
                     <div class="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-blue-500/10 to-transparent -translate-x-full group-hover:animate-[scan_2s_infinite]"></div>
-                    <div class="relative z-10 flex items-center gap-4 md:gap-6">
-                        <span class="text-[9px] md:text-[10px] uppercase tracking-[0.8em] font-bold text-white">Explore Moments</span>
+                    <div class="relative z-10 flex items-center justify-center gap-4 md:gap-6">
+                        <span class="text-[9px] md:text-[10px] uppercase tracking-[0.6em] md:tracking-[0.8em] font-bold text-white whitespace-nowrap">Explore Moments</span>
                         <div class="flex items-end gap-[3px] h-4">
                             <div class="w-[1.5px] bg-blue-500/50 animate-[bar_1.2s_infinite_0.1s]"></div>
                             <div class="w-[1.5px] bg-blue-500/50 animate-[bar_1.2s_infinite_0.3s]"></div>
@@ -91,33 +111,38 @@
                 </button>
             </div>
         </div>
-    </div>
+        
+    </main>
+    <footer class="flex-1 max-w-7xl mx-auto px-1 py-32 relative z-10 w=full text-center opacity-35 text-[8px] md:text-xs uppercase tracking-[0.3em] md:tracking-[0.5em] py-1 px-1 mt-auto">
+    Batch 2022-2026 • The Journey Continues
+</footer>
 </section>
 
 <div id="videoModal" class="fixed inset-0 z-[100] hidden bg-black/95 backdrop-blur-2xl flex items-center justify-center p-4 md:p-8">
-    <button onclick="closeCollegeVideo()" class="absolute top-4 right-4 md:top-6 md:right-6 text-white/50 hover:text-white text-4xl md:text-5xl transition-all z-[120]">&times;</button>
+    <button onclick="closeCollegeVideo()" class="absolute top-4 right-4 md:top-6 md:right-6 text-white/50 hover:text-white text-3xl md:text-5xl transition-all z-[120]">&times;</button>
     
-    <div class="w-full max-w-7xl flex flex-col md:flex-row gap-6 h-full md:h-[85vh] py-12 md:py-0">
-        <div class="flex-grow bg-black rounded-3xl overflow-hidden shadow-2xl relative flex flex-col min-h-[300px] md:min-h-0">
+    <div class="w-full max-w-7xl flex flex-col md:flex-row gap-6 h-[90vh] md:h-[85vh] py-12 md:py-0">
+        <div class="flex-grow bg-black rounded-3xl overflow-hidden shadow-2xl relative flex flex-col min-h-[40%] md:min-h-0">
             <div id="videoContainer" class="flex-grow relative bg-black flex items-center justify-center overflow-hidden">
                 <video id="mainVideo" class="max-w-full max-h-full object-contain" controls playsinline></video>
             </div>
             <div class="p-4 md:p-6 bg-white/5 border-t border-white/10">
-                <h3 id="videoTitle" class="text-xl md:text-2xl font-bold text-blue-400 font-serif italic">Select a Playlist</h3>
-                <p id="videoDesc" class="text-gray-400 text-xs md:text-sm mt-1">Batch of 2022 - 2026 Archive</p>
+                <h3 id="videoTitle" class="text-lg md:text-2xl font-bold text-blue-400 font-serif italic">&nbsp;</h3>
+                <p id="videoDesc" class="text-gray-400 text-[10px] md:text-sm mt-1">Batch of 2022 - 2026 Archive</p>
             </div>
         </div>
 
-        <div class="w-full md:w-80 flex flex-col gap-4 overflow-y-auto pr-2 custom-scrollbar max-h-[300px] md:max-h-full">
+        <div class="w-full md:w-80 flex flex-col gap-4 overflow-y-auto pr-2 custom-scrollbar min-h-[45%] md:min-h-0 max-h-[50%] md:max-h-full">
             <h4 class="text-xs uppercase tracking-widest text-gray-500 font-bold mb-2">Playlist</h4>
-            <div id="playlistItems" class="flex flex-col gap-4">
-                </div>
+            <div id="playlistItems" class="flex flex-col gap-3 md:gap-4">
+            </div>
         </div>
     </div>
 </div>
 
+
+
 <script>
-    // Keeping all your existing logic exactly as provided
     const modal = document.getElementById('videoModal');
 
     async function syncDriveFolder() {
@@ -140,7 +165,6 @@
                             <span class="text-white/40 group-hover:text-white transition-colors text-xl">▶</span>
                         </div>
                     </div>
-                    <p class="text-[10px] text-gray-400 mt-2 truncate">${item.name}</p>
                 `;
                 container.appendChild(div);
             });
@@ -149,8 +173,11 @@
 
     function changeVideo(driveId, title) {
         const container = document.getElementById('videoContainer');
-        const titleContainer = document.getElementById('videoTitle').parentElement.parentElement;
-        titleContainer.classList.add('hidden');
+        const titleContainer = document.getElementById('videoTitle');
+        if(titleContainer) {
+            titleContainer.innerText = ''; // Kept empty to hide the name when playing
+            titleContainer.parentElement.parentElement.classList.remove('hidden');
+        }
         
         container.innerHTML = ''; 
         const newIframe = document.createElement('iframe');
@@ -175,9 +202,8 @@
         document.getElementById('videoContainer').innerHTML = '';
     }
 
-    window.addEventListener('load', syncDriveFolder);
+    window.addEventListener('DOMContentLoaded', syncDriveFolder);
 
-    // Password logic
     const passwordInput = document.getElementById('vaultPass');
     const lockEmoji = document.getElementById('lockEmoji');
     const lockIcon = document.getElementById('lockIcon');
@@ -221,9 +247,5 @@
         document.getElementById('loginOverlay').style.display = 'none';
     }
 </script>
-
-<div class="absolute bottom-6 md:bottom-10 z-20 w-full text-center opacity-50 text-[8px] md:text-xs uppercase tracking-[0.3em] md:tracking-[0.5em] px-4">
-    Batch 2022-2026 • The Journey Continues
-</div>
 </body>
-    </html>
+</html>
