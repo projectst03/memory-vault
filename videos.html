@@ -170,6 +170,18 @@
                 line-height: 1.1 !important;
             }
         }
+
+
+        /* Fix full-screen background color */
+:fullscreen {
+    background-color: black;
+}
+
+/* Ensure the player takes full advantage of the screen */
+#videoLightbox:fullscreen #playerContainer {
+    max-width: 100vw !important;
+    height: 100vh !important;
+}
     </style>
 </head>
 <body class="custom-scrollbar overflow-x-hidden">
@@ -335,52 +347,29 @@
 
         // ... your openPlayer and closePlayer functions ...
 
-      function openPlayer(driveId, title) {
+     function openPlayer(driveId, title) {
     const lightbox = document.getElementById('videoLightbox');
     const playerContainer = document.getElementById('playerContainer');
     
     playerContainer.innerHTML = '';
     
-    // Smooth cinematic setup
+    // Use the reliable embed URL
     const embedUrl = `https://drive.google.com/file/d/${driveId}/preview`;
     
-    // Core HTML structure for player + control bar overlay
     playerContainer.innerHTML = `
-        <div class="relative w-full h-full bg-black group/player overflow-hidden">
-            <iframe id="videoIframe" src="${embedUrl}" class="w-full h-full border-0 pointer-events-auto" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>
+        <div id="playerWrapper" class="relative w-full h-full bg-black group/player overflow-hidden">
+            <iframe id="videoIframe" src="${embedUrl}" class="w-full h-full border-0" allow="autoplay; fullscreen"></iframe>
             
-            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover/player:opacity-100 transition-opacity duration-300 flex justify-between items-center z-50">
-                
-                <div class="text-white text-xs font-bold tracking-wider truncate max-w-[50%]">
-                    ${title.toUpperCase()}
+            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover/player:opacity-100 transition-opacity duration-300 flex justify-between items-center z-50">
+                <div class="text-white text-[10px] font-bold tracking-widest uppercase truncate w-1/3">
+                    ${title}
                 </div>
                 
-                <div class="flex items-center gap-4 bg-slate-900/80 px-4 py-2 rounded-full border border-white/10 backdrop-blur-md text-xs font-black tracking-widest text-gray-300">
-                    
-                    <div class="relative group/speed cursor-pointer hover:text-blue-400 transition">
-                        <span id="speedDisplay">1.0x SPEED</span>
-                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/speed:flex flex-col bg-slate-950 border border-white/10 rounded-xl overflow-hidden shadow-2xl text-[10px]">
-                            <button onclick="changePlaybackSpeed(0.5)" class="px-3 py-1.5 hover:bg-blue-600 hover:text-white transition">0.5x</button>
-                            <button onclick="changePlaybackSpeed(1.0)" class="px-3 py-1.5 hover:bg-blue-600 hover:text-white transition bg-white/5">1.0x</button>
-                            <button onclick="changePlaybackSpeed(1.5)" class="px-3 py-1.5 hover:bg-blue-600 hover:text-white transition">1.5x</button>
-                            <button onclick="changePlaybackSpeed(2.0)" class="px-3 py-1.5 hover:bg-blue-600 hover:text-white transition">2.0x</button>
-                        </div>
-                    </div>
-
+                <div class="flex items-center gap-2 bg-black/50 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 text-[9px] font-black uppercase tracking-widest">
+                    <span class="text-gray-400">Controls:</span>
+                    <button onclick="alert('Playback speed is managed natively by Google. Click the Settings gear ⚙️ inside the video player to change speed.')" class="hover:text-blue-400">Speed</button>
                     <span class="text-white/20">|</span>
-
-                    <div class="relative group/quality cursor-pointer hover:text-blue-400 transition">
-                        <span>QUALITY</span>
-                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/quality:block w-40 bg-slate-950 p-2 border border-white/10 rounded-xl shadow-2xl text-[10px] text-center normal-case tracking-normal font-normal text-gray-400">
-                            Adjust stream resolution via the gears <span class="text-blue-400">⚙️</span> inside the frame dynamically.
-                        </div>
-                    </div>
-
-                    <span class="text-white/20">|</span>
-
-                    <button onclick="toggleFullScreen()" class="hover:text-blue-400 transition uppercase flex items-center gap-1">
-                        <span>[⛶] EXPAND</span>
-                    </button>
+                    <button onclick="toggleFullScreen()" class="hover:text-blue-400">Fullscreen</button>
                 </div>
             </div>
         </div>
@@ -390,29 +379,17 @@
     document.body.style.overflow = 'hidden';
 }
 
-function changePlaybackSpeed(speed) {
-    document.getElementById('speedDisplay').innerText = speed + 'x SPEED';
-    // Friendly reminder: direct inner frame execution requires a same-origin asset host or native extension architectures.
-    console.log(`Speed updated via preference engine to: ${speed}x`);
-}
-
 function toggleFullScreen() {
-    const elem = document.getElementById('playerContainer');
-    
-    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-        if (elem.requestFullscreen) {
-            elem.requestFullscreen();
-        } else if (elem.webkitRequestFullscreen) {
-            elem.webkitRequestFullscreen();
-        }
+    const elem = document.getElementById('videoLightbox'); // Target the lightbox, not just the container
+    if (!document.fullscreenElement) {
+        elem.requestFullscreen().catch(err => alert(`Error: ${err.message}`));
     } else {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-        }
+        document.exitFullscreen();
     }
 }
+
+
+
 
 function closePlayer() {
     const lightbox = document.getElementById('videoLightbox');
