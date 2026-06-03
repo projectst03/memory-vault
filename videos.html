@@ -318,12 +318,13 @@ function openPlayer(driveId, title) {
     const iframe = document.createElement('iframe');
     iframe.src = embedUrl;
     
-    // THE OPTION ELIMINATOR:
-    // Expands the vertical canvas and centers it so the top menu 
-    // and bottom menu (quality gear, timeline) are permanently chopped off.
-    iframe.className = "absolute left-0 w-full border-0 pointer-events-auto";
-    iframe.style.height = "136%";
-    iframe.style.top = "-18%";
+    // THE UNIFORM ASPECT ZOOM HACK:
+    // Keeps standard 100% bounds to maintain aspect sanity.
+    // scale(1.32) uniformly expands the video, pushing Google's entire UI layout
+    // beyond the visible boundaries of the overflow-hidden parent frame.
+    iframe.className = "absolute inset-0 w-full h-full border-0";
+    iframe.style.transform = "scale(1.32)";
+    iframe.style.transformOrigin = "center center";
     
     iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
     iframe.setAttribute('allowfullscreen', 'true');
