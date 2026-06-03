@@ -86,6 +86,67 @@
 }
         @keyframes floatUp { 0% { transform: translateY(0) scale(0.5); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateY(-100px) scale(1.5); opacity: 0; } }
         .heart-symbol { position: absolute; color: #ef4444; font-size: 3rem; pointer-events: none; animation: floatUp 0.8s ease-out forwards; z-index: 200; }
+
+/* ==========================================================
+   MOBILE RESPONSIVE OVERRIDES (Keeps existing code untouched)
+   ========================================================== */
+@media (max-width: 640px) {
+    /* 1. Fix Navigation Layout */
+    nav {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        gap: 1rem !important;
+        justify-content: space-around !important;
+    }
+    
+    /* 2. Fix Header Spacing and Scaling */
+    header {
+        padding-top: 3.5rem !important; /* Replaces invalid pt-17 on mobile */
+        padding-bottom: 1.5rem !important;
+    }
+    
+    header h1 {
+        font-size: 3.75rem !important; /* Scaled down perfectly for small viewports */
+        letter-spacing: -0.04em !important;
+    }
+    
+    #vaultSubtitle {
+        letter-spacing: 0.25em !important; /* Reduces extreme letter spacing slightly so text fits */
+        font-size: 8px !important;
+    }
+
+    /* 3. Adjust Lobby Collection Cards */
+    #collectionLobby {
+        gap: 1.5rem !important;
+        margin-bottom: 3rem !important;
+    }
+    
+    .reveal h2 {
+        font-size: 1.875rem !important; /* Smooth scaling for text inside collection cards */
+    }
+
+    /* 4. Optimize Lightbox Actions Layout */
+    #lightbox > div.absolute.top-6 {
+        flex-direction: column-reverse !important;
+        gap: 1rem !important;
+        align-items: center !important;
+        top: 1.5rem !important;
+        padding: 0 1rem !important;
+    }
+    
+    #lightbox .text-5xl {
+        font-size: 2.5rem !important;
+        align-self: flex-end !important;
+        margin-top: -0.5rem;
+    }
+
+    /* 5. Fine-tune Navigation Overlay Zones */
+    .nav-zone {
+        width: 25% !important; /* Wider tap targets on mobile for easy navigation */
+        font-size: 2rem !important;
+    }
+}
+        
     </style>
 </head>
 <body class="custom-scrollbar overflow-x-hidden">
