@@ -342,16 +342,18 @@
 
         // ... your openPlayer and closePlayer functions ...
 
-       function openPlayer(driveId, title) {
+      function openPlayer(driveId, title) {
     const lightbox = document.getElementById('videoLightbox');
     const playerContainer = document.getElementById('playerContainer');
-    const nav = document.querySelector('nav'); // Select your nav
-    const header = document.querySelector('header'); // Select your header
     
-    // Make UI tiny
-    nav.classList.add('ui-mini');
-    header.classList.add('ui-mini');
-
+    // 1. Select the elements to hide
+    const nav = document.querySelector('nav');
+    const header = document.querySelector('header');
+    
+    // 2. Hide them completely
+    nav.classList.add('hidden');
+    header.classList.add('hidden');
+    
     playerContainer.innerHTML = '';
     const embedUrl = `https://drive.google.com/file/d/${driveId}/preview`;
     
@@ -370,9 +372,9 @@ function closePlayer() {
     const nav = document.querySelector('nav');
     const header = document.querySelector('header');
     
-    // Revert UI to normal
-    nav.classList.remove('ui-mini');
-    header.classList.remove('ui-mini');
+    // 1. Restore the hidden elements
+    nav.classList.remove('hidden');
+    header.classList.remove('hidden');
     
     lightbox.classList.add('invisible', 'opacity-0');
     document.getElementById('playerContainer').innerHTML = ''; 
