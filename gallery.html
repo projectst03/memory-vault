@@ -95,44 +95,75 @@
     
     
     
-    /* 4. Structural Position and Placement Reset for Navigation */
+  /* =======================================================
+   STRUCTURAL & PLACEMENT RESET (Matches Index.html Flow)
+   ======================================================= */
+@media screen and (max-width: 768px) {
+    /* Step 1: Fix the parent container wrapper if it's compressing layout components */
+    body, section {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        width: 100% !important;
+        min-height: 100vh !important;
+    }
+
+    /* Step 2: Exact structural placement override for the Navigation component */
     nav, .nav-zone {
-        position: relative !important;
+        /* Reset positioning context to match index.html sticky layout flow */
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 50 !important;
+        
+        /* Force full-width block alignment layout */
+        width: 100% !important;
+        max-width: 100vw !important;
+        box-sizing: border-box !important;
+        
+        /* Exact spacing parameters cloned from Index code layout */
+        padding: 1rem !important; /* Emulates p-4 on phone screens */
+        gap: 1rem !important;     /* Emulates gap-4 layout spacing */
+        
+        /* Flexbox alignment mechanics precisely cloned from Index layout */
         display: flex !important;
         flex-direction: row !important;
         flex-wrap: wrap !important;
         justify-content: center !important;
         align-items: center !important;
-        
-        /* Force full width placement & strip away breaking parent layouts */
-        width: 100% !important;
-        max-width: 100vw !important;
-        left: 0 !important;
-        right: 0 !important;
-        margin: 0 auto !important;
-        transform: none !important;
-        
-        /* Exact padding & matching index framework specs */
-        padding: 1rem 0.5rem !important; 
-        gap: 1rem !important;
-        background-color: rgba(0, 0, 0, 0.8) !important;
-        backdrop-filter: blur(20px) !important;
+        text-align: center !important;
+
+        /* Visual styling properties matching Index navbar backdrop */
+        background-color: rgba(0, 0, 0, 0.8) !important; /* bg-black/80 */
+        backdrop-filter: blur(20px) !important;           /* backdrop-blur-xl */
         -webkit-backdrop-filter: blur(20px) !important;
-        box-sizing: border-box !important;
-        z-index: 50 !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important; /* border-b border-white/5 */
+        
+        /* Erase any desktop margin displacements */
+        margin: 0 unset 1rem unset !important;
     }
 
-    nav a {
+    /* Step 3: Hyperlink Layout & Alignment Tuning */
+    nav a, .nav-zone a {
+        font-size: 10px !important;              /* text-[10px] */
+        font-weight: 700 !important;             /* font-bold */
+        text-transform: uppercase !important;    /* uppercase */
+        letter-spacing: 0.1em !important;        /* tracking-widest */
+        white-space: nowrap !important;          /* Keeps titles single-lined */
+        padding: 0 2px 4px 2px !important;       /* Space for border alignment */
         display: inline-block !important;
-        font-size: 10px !important;
-        letter-spacing: 0.1em !important;
-        text-transform: uppercase !important;
-        font-weight: 700 !important;
-        padding: 4px 6px !important;
-        margin: 0 !important;
-        text-align: center !important;
-        white-space: nowrap !important; /* Prevents text elements from splitting into two stacked rows */
     }
+
+    /* Step 4: Fix main content container below navbar placement */
+    main {
+        width: 100% !important;
+        max-width: 7xl !important;
+        padding-left: 1.5rem !important;  /* px-6 */
+        padding-right: 1.5rem !important; /* px-6 */
+        padding-top: 2.5rem !important;   /* py-10 */
+        box-sizing: border-box !important;
+    }
+}
     
     
     </style>
