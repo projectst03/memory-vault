@@ -158,66 +158,35 @@ h2 {
 
 
 
-      /* =======================================================
-   COMPLETE SITE UNIFICATION & MOBILE REALIGNMENT PATCH
-   ======================================================= */
-
-/* 1. Force Desktop & Mobile Navbar to match TimeLessVibe/Gallery exactly */
-nav {
-    position: sticky !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    background: rgba(0, 0, 0, 0.8) !important;       /* Frosted glass alpha layer */
-    backdrop-filter: blur(20px) !important;         /* Standard site blur filter */
-    -webkit-backdrop-filter: blur(20px) !important; /* Safari compatibility */
-    border-b: 1px solid rgba(255, 255, 255, 0.05) !important; /* Bottom grid line separator */
-    z-index: 50 !important;
-    padding: 2rem !important;                       /* Aligns standard desktop p-8 padding */
-}
-
-/* Re-adjust header padding now that the navbar structural layout is sticky */
-header {
-    padding-top: 3.5rem !important;
-    margin-bottom: 4rem !important;
-    opacity: 1 !important;
-}
-
-/* 2. Responsive Mobile System Alignment (Matches Index / Gallery Rules) */
-@media screen and (max-width: 768px) {
-    nav {
-        padding: 1rem !important;              /* Aligns with home page mobile frame padding */
-        gap: 1rem !important;                  /* Keeps navigation options on a single row line */
-    }
-
-    nav a {
-        font-size: 10px !important;            /* Scales down typography bounds */
-        letter-spacing: 0.1em !important;
-        padding-bottom: 4px !important;       /* Clears active line border indicators */
-    }
-
-    /* Rescale main text header to match index page scales */
+     /* 2. Rescale Main Heading to prevent viewport clipping */
     h1, .text-7xl {
-        font-size: 2.25rem !important;         /* Matches index.html text-4xl size rule */
-        line-height: 1.1 !important;
-        letter-spacing: -0.05em !important;    /* Tightens tracking down to index layout limits */
+        font-size: 1.85rem !important;        /* Extra step down because it is a single 17-letter word with no spaces! */
+        line-height: 1.1 !important;           
         margin-bottom: 1rem !important;
+        letter-spacing: -0.04em !important;    /* Clean cinematic compression */
     }
 
     header {
-        padding-top: 2rem !important;          /* Tames spacing bloat on smaller devices */
+        padding-top: 2rem !important;          
         margin-bottom: 2rem !important;
     }
 
     #vaultSubtitle {
         font-size: 10px !important;
-        letter-spacing: 0.4em !important;      /* Restores clean cinematic tracking layout spacing */
+        letter-spacing: 0.4em !important;      
     }
 
-    /* Realign internal grid structure wrappers */
+    /* NEW ADDITION: Force-shrinks the hardcoded inline 2rem text on the cinematic loading screen */
+    #loadingScreen h2 {
+        font-size: 1.2rem !important;          /* Scales down cleanly on mobile displays */
+        letter-spacing: 0.05em !important;     /* Prevents letter splitting overflow */
+        padding: 0 1.5rem !important;          /* Safety padding on screen edges */
+    }
+
+    /* 4. Optimize Dynamic Grid Container Area */
     #collectionGrid {
-        padding: 1.25rem !important;           /* Reclaims edge display real estate */
-        border-radius: 1.5rem !important;       /* Softens hard layout corners smoothly */
+        padding: 1.25rem !important;           
+        border-radius: 1.5rem !important;       
         gap: 1.5rem !important;
     }
 
@@ -229,17 +198,15 @@ header {
 
     /* 3. Widescreen Video Frame Optimization Patch */
     #playerContainer {
-        height: auto !important;               /* Strips broken height restraints */
-        aspect-ratio: 16 / 9 !important;       /* Locks dynamic wrapper window to standard 16:9 widescreen */
+        height: auto !important;               
+        aspect-ratio: 16 / 9 !important;       
         border-radius: 1.25rem !important;
     }
 
     #playerContainer iframe {
-        height: 100% !important;               /* Forces player runtime viewport scaling */
+        height: 100% !important;               
         border-radius: 1.25rem !important;
     }
-}
-
 
 
 
