@@ -158,93 +158,77 @@ h2 {
 
 
 /* =======================================================
-   COMPLETE MASTER SITE UNIFICATION & NAVIGATION PATCH
+   RESPONSIVE ALIGNMENT & POSITIONING UNIFICATION PATCH
    ======================================================= */
-
-/* 1. Desktop Navbar Sticky Style (Matches Gallery/TimeLessVibe) */
-nav {
-    position: sticky !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    background: rgba(0, 0, 0, 0.8) !important;       /* Frosted glass alpha layer */
-    backdrop-filter: blur(20px) !important;         /* Standard site blur filter */
-    -webkit-backdrop-filter: blur(20px) !important; /* Safari compatibility */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important; /* Fixed syntax property */
-    z-index: 50 !important;
-    padding: 2rem !important;                       /* Standard desktop spacing */
-}
-
-/* Reset header layout padding now that the navbar is sticky */
-header {
-    padding-top: 3.5rem !important;
-    margin-bottom: 4rem !important;
-    opacity: 1 !important;
-}
-
-/* 2. Full Responsive System Rules (Mobile & Tablet) */
 @media screen and (max-width: 768px) {
-    
-    /* Fixes the navigation bar layout on mobile frames */
+    /* 1. Sync Navbar Placement & Layout with other pages */
     nav {
-        padding: 1rem !important;              /* Shrinks wrapper padding to match index */
-        gap: 0.75rem !important;               /* Compresses item gaps so links stay on one line */
+        padding: 1.5rem 1rem !important;       /* Matches standard mobile bar padding */
+        gap: 0.85rem !important;               /* Fits all four links on a single line safely */
         justify-content: center !important;
     }
 
     nav a {
-        font-size: 10px !important;            /* Clean mobile typography scale */
-        letter-spacing: 0.05em !important;     /* Fits all 4 links safely across screen width */
-        padding-bottom: 4px !important;
+        font-size: 10px !important;            /* Matches index/gallery tracking standards */
+        letter-spacing: 0.05em !important;
+        padding-bottom: 2px !important;
     }
 
-    /* Tames the 17-letter UNWRITTENCHAPTERS heading */
-    h1, .text-7xl {
-        font-size: 1.85rem !important;         
-        line-height: 1.1 !important;           
-        margin-bottom: 1rem !important;
-        letter-spacing: -0.04em !important;    
-    }
-
+    /* 2. Sync Header Text Placement & Sizing */
     header {
-        padding-top: 2rem !important;          
-        margin-bottom: 2rem !important;
+        padding-top: 6rem !important;          /* Adjusts height below absolute navbar positioning */
+        margin-bottom: 2.5rem !important;      /* Cleans up excessive vertical space on mobile screens */
+    }
+
+    h1, .text-7xl {
+        font-size: 2rem !important;            /* Scales down the 17-letter word to fit screen widths */
+        line-height: 1.2 !important;
+        letter-spacing: -0.03em !important;
+        margin-bottom: 0.75rem !important;
     }
 
     #vaultSubtitle {
-        font-size: 10px !important;
-        letter-spacing: 0.4em !important;      
+        font-size: 9px !important;
+        letter-spacing: 0.3em !important;      /* Tames tracking stretch for mobile viewports */
     }
 
-    /* Fixes the hardcoded 2rem text on the cinematic loading screen */
+    /* 3. Adjust Cinematic Loading Screen */
     #loadingScreen h2 {
-        font-size: 1.2rem !important;          
-        letter-spacing: 0.05em !important;     
-        padding: 0 1.5rem !important;          
+        font-size: 1.25rem !important;         /* Matches mobile size proportions */
+        letter-spacing: 0.05em !important;
+        padding: 0 1rem !important;
     }
 
-    /* Responsive Grid & Content Space Adjustments */
+    /* 4. Match Gallery Grid Margins & Spacing Rules */
     #collectionGrid {
-        padding: 1.25rem !important;           
+        padding: 1.25rem !important;           /* Reclaims edge space exactly like gallery.html */
         border-radius: 1.5rem !important;       
         gap: 1.5rem !important;
+        margin-top: 1rem !important;
+    }
+
+    /* Target section headings dynamically generated inside the grid */
+    #collectionGrid .col-span-full {
+        margin-top: 2rem !important;
+        margin-bottom: 0.75rem !important;
+        padding-left: 1rem !important;
     }
 
     #collectionGrid h2.text-3xl {
-        font-size: 1.5rem !important;          
-        letter-spacing: 0.15em !important;
+        font-size: 1.35rem !important;         /* Balances section headers (e.g., WHITE COLLECTION) */
+        letter-spacing: 0.1em !important;
     }
 
-    /* Responsive 16:9 Video Frame scaling overrides */
+    /* 5. Fluid Responsive 16:9 Video Box Constraints */
     #playerContainer {
-        height: auto !important;               
-        aspect-ratio: 16 / 9 !important;       
-        border-radius: 1.25rem !important;
+        height: auto !important;               /* Overrides desktop 500px rigid clamp */
+        aspect-ratio: 16 / 9 !important;       /* Maintains authentic video dimensions */
+        border-radius: 1rem !important;
     }
 
     #playerContainer iframe {
         height: 100% !important;               
-        border-radius: 1.25rem !important;
+        border-radius: 1rem !important;
     }
 }
 
