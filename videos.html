@@ -170,18 +170,6 @@
                 line-height: 1.1 !important;
             }
         }
-
-
-        /* Fix full-screen background color */
-:fullscreen {
-    background-color: black;
-}
-
-/* Ensure the player takes full advantage of the screen */
-#videoLightbox:fullscreen #playerContainer {
-    max-width: 100vw !important;
-    height: 100vh !important;
-}
     </style>
 </head>
 <body class="custom-scrollbar overflow-x-hidden">
@@ -226,91 +214,206 @@
         </div>
     </div>
 
-   <script>
-    const DRIVE_API_URL = "https://script.google.com/macros/s/AKfycbwPOKnHoEQY7p30XnPUZ7eW00vY-4e1OnBw0ChanYK_O1BqgrtMzoLNxSSr4VBnYq5dkQ/exec";
-    const grid = document.getElementById('collectionGrid');
+    <script>
+        // This function talks to your Apps Script and updates your gallery
+        // Add this variable at the top of your <script>
+        
+        const DRIVE_API_URL = "https://script.google.com/macros/s/AKfycbwPOKnHoEQY7p30XnPUZ7eW00vY-4e1OnBw0ChanYK_O1BqgrtMzoLNxSSr4VBnYq5dkQ/exec"; // Use your JSONP/CORS URL
+        const grid = document.getElementById('collectionGrid');
+        
+        // This will hold all your videos once fetched
+        let allVideos = [];
+
+        // Run this the moment the page loads
+        window.addEventListener('DOMContentLoaded', async () => {
+            await fetchAllVideos();
+        });
+
+        async function fetchAllVideos() {
+            // Hide everything inside the main header so the transition is clean
+            const header = document.querySelector('header');
+            if (header) header.style.opacity = '0';
+            
+            // The cinematic title screen
+            grid.innerHTML = `
+                <div id="loadingScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-black animate-entrance">
+                    <div class="text-center">
+                        <h2 class="text-white font-black uppercase tracking-[0.1em]" 
+                            style="font-size: 1rem; font-family: 'Arial Black', sans-serif;">
+                            MOMENTS WAITING FOR YOU
+                        </h2>
+                    </div>
+                </div>
+            `;
+            
+            // ... rest of your existing fetch logic ...
+            
+            // Create a new script element to load the data
+            const script = document.createElement('script');
+            
+            // Define the global function the script will call
+            window.handleDriveData = (data) => {
+                allVideos = data.map(v => ({ driveId: v.id, title: v.title, type: "video" }));
+                renderGrid(allVideos);
+                document.body.removeChild(script); // Clean up
+            };
+            
+            // Set the source (add &callback=handleDriveData)
+            script.src = DRIVE_API_URL + "?callback=handleDriveData";
+            document.body.appendChild(script);
+        }
+
+        function renderGrid(data) {
+            console.log("Rendering data, count:", data.length); // CHECK CONSOLE: Does it show a number > 0?
+
+            const loadingScreen = document.getElementById('loadingScreen');
+            if (loadingScreen) {
+                loadingScreen.classList.add('fade-out');
+                setTimeout(() => {
+                    loadingScreen.remove();
+                }, 1500);
+            }
+            
+            // 1. Force Header to show immediately
+            const header = document.querySelector('header');
+            if (header) {
+                header.style.display = 'block';
+                header.style.opacity = '1';
+            }
+            
+            // 2. Clear grid
+            grid.innerHTML = '';
+            
+            // 3. Collection Map
+            const collections = [
+                { name: "WHITE COLLECTION", tag: "WHITE" },
+                { name: "TRADITIONAL GALA", tag: "TRADITIONAL" },
+                { name: "SIGNATURE DAY", tag: "SIGNATURE" },
+                { name: "FAREWELL DAY", tag: "FAREWELL" },
+                { name: "PAGES FROM THE PAST", tag: "PAGES FROM PAST" },
+                { name: "FARMHOUSE FUN", tag: "FARMHOUSE" }
+            ];
+
+            // 4. Build the grid
+            let foundAny = false;
+            collections.forEach(coll => {
+                const filtered = data.filter(v => v.title && v.title.toUpperCase().includes(coll.tag));
+                
+                if (filtered.length > 0) {
+                    foundAny = true;
+                    // Add Header
+                    grid.innerHTML += `
+                        <div class="col-span-full mt-16 mb-8 border-l-4 border-blue-500 pl-6 w-full">
+                            <h2 class="text-white font-black text-3xl uppercase tracking-[0.2em]">${coll.name}</h2>
+                        </div>
+                    `;
+                    
+                    // Add Cards
+                    filtered.forEach((item) => {
+                        const action = `openPlayer('${item.driveId}', '${item.title}')`;
+                        const thumbSrc = `https://lh3.googleusercontent.com/d/${item.driveId}=w600`;
+                        
+                        grid.innerHTML += `
+                            <div onclick="${action}" class="folder-card p-3 rounded-[2.5rem] cursor-pointer group overflow-hidden transition-all duration-500 hover:scale-[1.02]">
+                                <div class="aspect-video bg-gray-900 rounded-[2rem] overflow-hidden relative shadow-lg">
+                                    <img src="${thumbSrc}" 
+                                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                                    <div class="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <span class="text-4xl text-white">▶</span>
+                                    </div>
+                                </div>
+                            </div>`;
+                    });
+                }
+            });
+
+            if (!foundAny) {
+                grid.innerHTML = `<p class="text-white text-center col-span-full mt-10">No videos found with matching tags.</p>`;
+            }
+        }
+
+        // ... your openPlayer and closePlayer functions ...
+
+       // Update your openPlayer function:
+function openPlayer(driveId, title) {
     const lightbox = document.getElementById('videoLightbox');
     const playerContainer = document.getElementById('playerContainer');
+    
+    // Note: This requires a Direct Download link or a direct stream URL, 
+    // not the /preview page.
+    const videoUrl = `https://your-direct-link-here.mp4`; 
+    
+    playerContainer.innerHTML = `
+        <video id="player" playsinline controls>
+            <source src="${videoUrl}" type="video/mp4" />
+        </video>
+    `;
+    
+    // Initialize Plyr and HIDE specific controls via config
+    const player = new Plyr('#player', {
+        controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
+        hideControls: true // This will hide controls when not interacting
+    });
+    
+    lightbox.classList.remove('invisible', 'opacity-0');
+}
 
-    // 1. Initial Load
-    window.addEventListener('DOMContentLoaded', () => fetchAllVideos());
+        function closePlayer() {
+            // 1. Hide the lightbox
+            const lightbox = document.getElementById('videoLightbox');
+            lightbox.classList.add('invisible', 'opacity-0');
+            
+            // 2. IMPORTANT: This physically removes the player from the DOM,
+            // which forces the video to stop playing and clear its memory.
+            const playerContainer = document.getElementById('playerContainer');
+            playerContainer.innerHTML = ''; 
+            
+            // 3. Reset page scrolling
+            document.body.style.overflow = 'auto';
+        }
 
-    async function fetchAllVideos() {
-        const header = document.querySelector('header');
-        if (header) header.style.opacity = '0';
-        
-        grid.innerHTML = `<div id="loadingScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-black">Loading...</div>`;
-        
-        const script = document.createElement('script');
-        window.handleDriveData = (data) => {
-            const allVideos = data.map(v => ({ driveId: v.id, title: v.title }));
-            renderGrid(allVideos);
-            document.body.removeChild(script);
-        };
-        script.src = `${DRIVE_API_URL}?callback=handleDriveData`;
-        document.body.appendChild(script);
-    }
+        // Add this dummy function so the error goes away
+        function loadCollection(key) {
+            console.log("Collection requested: " + key);
+            // If you want the main page to load, just call the fetcher
+            if(key === 'main') fetchAllVideos();
+        }
 
-    function renderGrid(data) {
-        document.getElementById('loadingScreen')?.remove();
-        const header = document.querySelector('header');
-        if (header) header.style.opacity = '1';
-        
-        grid.innerHTML = '';
-        const collections = [
-            { name: "WHITE COLLECTION", tag: "WHITE" },
-            { name: "TRADITIONAL GALA", tag: "TRADITIONAL" },
-            { name: "SIGNATURE DAY", tag: "SIGNATURE" },
-            { name: "FAREWELL DAY", tag: "FAREWELL" },
-            { name: "PAGES FROM THE PAST", tag: "PAGES FROM PAST" },
-            { name: "FARMHOUSE FUN", tag: "FARMHOUSE" }
-        ];
+        function toggleFullScreen() {
+            const elem = document.getElementById('playerContainer');
+            
+            // Check if we are already in fullscreen
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                // Request Fullscreen with a smooth transition
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen();
+                } else if (elem.webkitRequestFullscreen) {
+                    elem.webkitRequestFullscreen();
+                }
+                
+                // Add a class for any custom CSS styling during fullscreen
+                elem.classList.add('fullscreen-mode');
+            } else {
+                // Exit Fullscreen
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+                
+                elem.classList.remove('fullscreen-mode');
+            }
+        }
 
-        collections.forEach(coll => {
-            const filtered = data.filter(v => v.title?.toUpperCase().includes(coll.tag));
-            if (filtered.length > 0) {
-                grid.innerHTML += `<div class="col-span-full mt-16 mb-8 border-l-4 border-blue-500 pl-6"><h2 class="text-white font-black text-3xl uppercase tracking-[0.2em]">${coll.name}</h2></div>`;
-                filtered.forEach(item => {
-                    grid.innerHTML += `
-                        <div onclick="openPlayer('${item.driveId}', '${item.title}')" class="folder-card p-3 rounded-[2.5rem] cursor-pointer hover:scale-[1.02] transition-all">
-                            <div class="aspect-video bg-gray-900 rounded-[2rem] overflow-hidden relative shadow-lg">
-                                <div class="absolute inset-0 flex items-center justify-center bg-black/20"><span class="text-4xl text-white">▶</span></div>
-                            </div>
-                        </div>`;
-                });
+        // Add an event listener to detect when the user hits 'ESC' key to exit
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+                document.getElementById('playerContainer').classList.remove('fullscreen-mode');
             }
         });
-    }
 
-    // 2. Player Logic
-    function openPlayer(driveId, title) {
-        playerContainer.innerHTML = `
-            <div class="relative w-full h-full bg-black group/player">
-                <iframe src="https://drive.google.com/file/d/${driveId}/preview" class="w-full h-full border-0" allow="autoplay; fullscreen" allowfullscreen></iframe>
-                <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover/player:opacity-100 transition-opacity flex justify-between items-center z-50">
-                    <div class="text-white font-bold tracking-[0.2em] uppercase text-xs truncate w-1/2">${title.toUpperCase()}</div>
-                    <button onclick="toggleFullScreen()" class="text-white hover:text-blue-400 uppercase tracking-[0.2em] text-xs font-black">[⛶] Fullscreen</button>
-                </div>
-            </div>
-        `;
-        lightbox.classList.remove('invisible', 'opacity-0');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function toggleFullScreen() {
-        if (!document.fullscreenElement) {
-            lightbox.requestFullscreen().catch(err => console.error(err));
-        } else {
-            document.exitFullscreen();
-        }
-    }
-
-    function closePlayer() {
-        lightbox.classList.add('invisible', 'opacity-0');
-        playerContainer.innerHTML = '';
-        document.body.style.overflow = 'auto';
-        if (document.fullscreenElement) document.exitFullscreen();
-    }
-</script>
+        loadCollection('main');
+    </script>
 </body>
 </html>
