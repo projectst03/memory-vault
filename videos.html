@@ -43,9 +43,9 @@
 
         header {
             padding-top: 5vh !important;
-            margin-bottom: 1.5rem !important; /* FIXED: Reduced from 6rem to close the gap */
-            opacity: 0; /* Start invisible */
-            transition: opacity 1.5s ease-in-out; /* Smooth transition */
+            margin-bottom: 1.5rem !important; 
+            opacity: 0; 
+            transition: opacity 1.5s ease-in-out; 
         }
 
         #videoLightbox {
@@ -53,7 +53,7 @@
             backdrop-filter: blur(15px);
         }
 
-        #playerTitle { display: block !important; } /* Changed to block so you can see video titles */
+        #playerTitle { display: block !important; } 
 
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
@@ -89,7 +89,6 @@
             background: rgba(255, 255, 255, 0.01);
         }
         
-        /* Ensure your font is clean */
         h2 {
             font-family: 'Inter', sans-serif;
             letter-spacing: -0.02em;
@@ -98,16 +97,15 @@
             grid-column: 1 / -1 !important;
             width: 100% !important;
         }
+
+        /* FIXED: Removed rigid height: 500px to allow fluid responsive aspect scaling */
         #playerContainer {
-            /* Set up the smooth transition for width and height */
             transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
             position: relative;
             width: 100%;
-            max-width: 1024px; /* Matches your current container */
-            height: 500px;
+            max-width: 1024px; 
         }
 
-        /* This class will be added via JS to trigger the "Full Screen" look */
         .is-fullscreen {
             position: fixed !important;
             top: 0 !important;
@@ -119,7 +117,6 @@
             z-index: 200;
         }
 
-        /* This class is applied when the player is active */
         .lightbox-active {
             transform: scale(1);
             opacity: 1;
@@ -129,44 +126,40 @@
            EXACT INDEX.HTML MOBILE SPECIFICATIONS ALIGNMENT PATCH
            ======================================================= */
         @media screen and (max-width: 768px) {
-            /* 1. Reset Navbar Padding, Gaps, and Text Sizes to match Index exactly */
             nav {
-                padding: 1rem !important;              /* Clones index.html p-4 */
-                gap: 1rem !important;                 /* Clones index.html gap-4 */
+                padding: 1rem !important;              
+                gap: 1rem !important;                 
             }
 
             nav a {
-                font-size: 10px !important;            /* Clones index.html text-[10px] */
-                letter-spacing: 0.1em !important;     /* Clones index.html tracking-widest */
-                padding-bottom: 4px !important;       /* Matches pb-1 clearance for the active border */
+                font-size: 10px !important;            
+                letter-spacing: 0.1em !important;     
+                padding-bottom: 4px !important;       
             }
 
-            /* 2. Rescale Title to match the Index page's h1 text-4xl size */
             h1, .text-7xl {
-                font-size: 2.25rem !important;         /* Clones index.html text-4xl exactly */
-                line-height: 1 !important;             /* Clones leading-none */
-                margin-bottom: 1rem !important;        /* Clones mb-4 */
-                letter-spacing: -0.05em !important;    /* Clones tracking-tighter */
+                font-size: 2.25rem !important;         
+                line-height: 1 !important;             
+                margin-bottom: 1rem !important;        
+                letter-spacing: -0.05em !important;    
             }
 
-            /* 3. Re-adjust header positions and text sizes */
             header {
-                padding-top: 0px !important;           /* Neutralizes the desktop pt-17 displacement */
-                padding-bottom: 1rem !important;       /* Tightened mobile padding */
+                padding-top: 0px !important;           
+                padding-bottom: 1rem !important;       
             }
 
             #vaultSubtitle {
-                font-size: 10px !important;            /* Clones index subtitle font size */
-                letter-spacing: 0.4em !important;      /* Clones tracking-[0.4em] from index components */
+                font-size: 10px !important;            
+                letter-spacing: 0.4em !important;      
             }
 
-            /* 4. Ensure grid layouts stay safe on compact phone frames */
             #collectionLobby {
-                gap: 1.5rem !important;                /* Prevents cards from overcrowding */
+                gap: 1.5rem !important;                
             }
             
             #collectionLobby h2.text-4xl {
-                font-size: 1.75rem !important;         /* Keeps card header scales crisp and within borders */
+                font-size: 1.75rem !important;         
                 line-height: 1.1 !important;
             }
         }
@@ -184,9 +177,9 @@
             <a href="videos.html" class="text-blue-400 border-b border-blue-400 pb-1">Videos</a>
         </nav>
 
-        <main class="max-w-7xl mx-auto px-6 pt-24 pb-16 relative z-10">
+        <main class="max-w-6xl mx-auto px-6 pt-24 pb-16 relative z-10">
             <header class="text-center">
-                <h1 class="text-5xl font-black italic mb-4 uppercase leading-none">UN<span class="text-blue-500"> WRITTEN</span> CHAPTERS</h1>
+                <h1 class="text-2xl font-black italic mb-4 uppercase leading-none">UN<span class="text-blue-500">WRITTEN</span>CHAPTERS</h1>
                 <p id="vaultSubtitle" class="text-gray-500 uppercase tracking-[0.5em] text-[10px] font-bold">2022-2026 MOMENTS</p>
             </header>
 
@@ -208,33 +201,25 @@
                 <button onclick="closePlayer()" class="text-white/40 hover:text-white text-4xl leading-none">×</button>
             </div>
 
-            <div class="w-full max-w-5xl my-auto">
-                <div id="playerContainer" class="w-full rounded-[2rem] shadow-2xl border border-white/10 overflow-hidden"></div>
+            <div class="w-full max-w-5xl my-auto px-2 md:px-6">
+                <div id="playerContainer" class="w-full aspect-video rounded-[1.5rem] md:rounded-[2rem] shadow-2xl border border-white/10 overflow-hidden bg-black"></div>
             </div>
         </div>
     </div>
 
     <script>
-        // This function talks to your Apps Script and updates your gallery
-        // Add this variable at the top of your <script>
-        
-        const DRIVE_API_URL = "https://script.google.com/macros/s/AKfycbwPOKnHoEQY7p30XnPUZ7eW00vY-4e1OnBw0ChanYK_O1BqgrtMzoLNxSSr4VBnYq5dkQ/exec"; // Use your JSONP/CORS URL
+        const DRIVE_API_URL = "https://script.google.com/macros/s/AKfycbwPOKnHoEQY7p30XnPUZ7eW00vY-4e1OnBw0ChanYK_O1BqgrtMzoLNxSSr4VBnYq5dkQ/exec"; 
         const grid = document.getElementById('collectionGrid');
-        
-        // This will hold all your videos once fetched
         let allVideos = [];
 
-        // Run this the moment the page loads
         window.addEventListener('DOMContentLoaded', async () => {
             await fetchAllVideos();
         });
 
         async function fetchAllVideos() {
-            // Hide everything inside the main header so the transition is clean
             const header = document.querySelector('header');
             if (header) header.style.opacity = '0';
             
-            // The cinematic title screen
             grid.innerHTML = `
                 <div id="loadingScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-black animate-entrance">
                     <div class="text-center">
@@ -246,25 +231,19 @@
                 </div>
             `;
             
-            // ... rest of your existing fetch logic ...
-            
-            // Create a new script element to load the data
             const script = document.createElement('script');
-            
-            // Define the global function the script will call
             window.handleDriveData = (data) => {
                 allVideos = data.map(v => ({ driveId: v.id, title: v.title, type: "video" }));
                 renderGrid(allVideos);
-                document.body.removeChild(script); // Clean up
+                document.body.removeChild(script); 
             };
             
-            // Set the source (add &callback=handleDriveData)
             script.src = DRIVE_API_URL + "?callback=handleDriveData";
             document.body.appendChild(script);
         }
 
         function renderGrid(data) {
-            console.log("Rendering data, count:", data.length); // CHECK CONSOLE: Does it show a number > 0?
+            console.log("Rendering data, count:", data.length); 
 
             const loadingScreen = document.getElementById('loadingScreen');
             if (loadingScreen) {
@@ -274,17 +253,14 @@
                 }, 1500);
             }
             
-            // 1. Force Header to show immediately
             const header = document.querySelector('header');
             if (header) {
                 header.style.display = 'block';
                 header.style.opacity = '1';
             }
             
-            // 2. Clear grid
             grid.innerHTML = '';
             
-            // 3. Collection Map
             const collections = [
                 { name: "WHITE COLLECTION", tag: "WHITE" },
                 { name: "TRADITIONAL GALA", tag: "TRADITIONAL" },
@@ -294,21 +270,18 @@
                 { name: "FARMHOUSE FUN", tag: "FARMHOUSE" }
             ];
 
-            // 4. Build the grid
             let foundAny = false;
             collections.forEach(coll => {
                 const filtered = data.filter(v => v.title && v.title.toUpperCase().includes(coll.tag));
                 
                 if (filtered.length > 0) {
                     foundAny = true;
-                    // Add Header
                     grid.innerHTML += `
                         <div class="col-span-full mt-16 mb-8 border-l-4 border-blue-500 pl-6 w-full">
                             <h2 class="text-white font-black text-3xl uppercase tracking-[0.2em]">${coll.name}</h2>
                         </div>
                     `;
                     
-                    // Add Cards
                     filtered.forEach((item) => {
                         const action = `openPlayer('${item.driveId}', '${item.title}')`;
                         const thumbSrc = `https://lh3.googleusercontent.com/d/${item.driveId}=w600`;
@@ -333,22 +306,19 @@
             }
         }
 
-        // ... your openPlayer and closePlayer functions ...
-
         function openPlayer(driveId, title) {
             const lightbox = document.getElementById('videoLightbox');
             const playerContainer = document.getElementById('playerContainer');
             
             playerContainer.innerHTML = '';
-            
-            // Switch to the 'embedded' format which is much more reliable for streaming
             const embedUrl = `https://drive.google.com/file/d/${driveId}/preview`;
             
             const iframe = document.createElement('iframe');
             iframe.src = embedUrl;
-            iframe.className = "w-full h-[500px] rounded-[2rem] border-0";
             
-            // Add all permissions needed to allow the video to initialize
+            /* FIXED: Changed from absolute fixed height h-[500px] to dynamic fluid aspect-video */
+            iframe.className = "w-full aspect-video rounded-[1.5rem] md:rounded-[2rem] border-0";
+            
             iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
             iframe.setAttribute('allowfullscreen', 'true');
             
@@ -359,53 +329,40 @@
         }
 
         function closePlayer() {
-            // 1. Hide the lightbox
             const lightbox = document.getElementById('videoLightbox');
             lightbox.classList.add('invisible', 'opacity-0');
             
-            // 2. IMPORTANT: This physically removes the player from the DOM,
-            // which forces the video to stop playing and clear its memory.
             const playerContainer = document.getElementById('playerContainer');
             playerContainer.innerHTML = ''; 
             
-            // 3. Reset page scrolling
             document.body.style.overflow = 'auto';
         }
 
-        // Add this dummy function so the error goes away
         function loadCollection(key) {
             console.log("Collection requested: " + key);
-            // If you want the main page to load, just call the fetcher
             if(key === 'main') fetchAllVideos();
         }
 
         function toggleFullScreen() {
             const elem = document.getElementById('playerContainer');
             
-            // Check if we are already in fullscreen
             if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-                // Request Fullscreen with a smooth transition
                 if (elem.requestFullscreen) {
                     elem.requestFullscreen();
                 } else if (elem.webkitRequestFullscreen) {
                     elem.webkitRequestFullscreen();
                 }
-                
-                // Add a class for any custom CSS styling during fullscreen
                 elem.classList.add('fullscreen-mode');
             } else {
-                // Exit Fullscreen
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
                 } else if (document.webkitExitFullscreen) {
                     document.webkitExitFullscreen();
                 }
-                
                 elem.classList.remove('fullscreen-mode');
             }
         }
 
-        // Add an event listener to detect when the user hits 'ESC' key to exit
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
                 document.getElementById('playerContainer').classList.remove('fullscreen-mode');
