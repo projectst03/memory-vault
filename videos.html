@@ -202,7 +202,7 @@
                 <button onclick="closePlayer()" class="text-white/40 hover:text-white text-4xl leading-none">×</button>
             </div>
 
-         <div class="flex-1 flex items-center justify-center p-2 sm:p-4 md:p-8 w-full max-w-4xl mx-auto">
+       <div class="flex-1 flex items-center justify-center p-2 sm:p-4 md:p-8 w-full max-w-4xl mx-auto">
     <div id="playerContainer" class="w-full aspect-video relative rounded-[1rem] md:rounded-[2rem] shadow-2xl border border-white/10 overflow-hidden bg-black">
         </div>
 </div>
@@ -313,23 +313,29 @@ function openPlayer(driveId, title) {
     const playerContainer = document.getElementById('playerContainer');
     
     playerContainer.innerHTML = '';
-    const embedUrl = `https://drive.google.com/file/d/${driveId}/preview`;
     
-    const iframe = document.createElement('iframe');
-    iframe.src = embedUrl;
+    // Bypasses the Google Player UI entirely to stream the raw video data
+    const directStreamUrl = `https://docs.google.com/uc?export=download&id=${driveId}`;
     
-    // THE UNIFORM ASPECT ZOOM HACK:
-    // Keeps standard 100% bounds to maintain aspect sanity.
-    // scale(1.32) uniformly expands the video, pushing Google's entire UI layout
-    // beyond the visible boundaries of the overflow-hidden parent frame.
-    iframe.className = "absolute inset-0 w-full h-full border-0";
-    iframe.style.transform = "scale(1.32)";
-    iframe.style.transformOrigin = "center center";
+    const video = document.createElement('video');
+    video.src = directStreamUrl;
     
-    iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
-    iframe.setAttribute('allowfullscreen', 'true');
+    // Configuration: Web standard playback without any control overlays
+    video.className = "w-full h-full object-contain";
+    video.playsInline = true;
+    video.controls = false; // This strips away the playing bar entirely
+    video.autoplay = true;
     
-    playerContainer.appendChild(iframe);
+    // Simple Interaction: Tap the video anywhere to seamlessly play or pause
+    video.addEventListener('click', () => {
+        if (video.paused) {
+            video.play();
+        } else {
+            video.pause();
+        }
+    });
+    
+    playerContainer.appendChild(video);
     lightbox.classList.remove('invisible', 'opacity-0');
     document.body.style.overflow = 'hidden';
 }
