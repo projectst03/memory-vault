@@ -342,17 +342,13 @@
 
         // ... your openPlayer and closePlayer functions ...
 
-      function openPlayer(driveId, title) {
+     function openPlayer(driveId, title) {
     const lightbox = document.getElementById('videoLightbox');
     const playerContainer = document.getElementById('playerContainer');
     
-    // 1. Select the elements to hide
-    const nav = document.querySelector('nav');
-    const header = document.querySelector('header');
-    
-    // 2. Hide them completely
-    nav.classList.add('hidden');
-    header.classList.add('hidden');
+    // Force direct style override to bypass class conflicts
+    document.querySelector('nav').style.display = 'none';
+    document.querySelector('header').style.display = 'none';
     
     playerContainer.innerHTML = '';
     const embedUrl = `https://drive.google.com/file/d/${driveId}/preview`;
@@ -363,18 +359,18 @@
     iframe.setAttribute('allow', 'autoplay; fullscreen');
     
     playerContainer.appendChild(iframe);
+    
+    // Show lightbox
     lightbox.classList.remove('invisible', 'opacity-0');
     document.body.style.overflow = 'hidden';
 }
 
 function closePlayer() {
     const lightbox = document.getElementById('videoLightbox');
-    const nav = document.querySelector('nav');
-    const header = document.querySelector('header');
     
-    // 1. Restore the hidden elements
-    nav.classList.remove('hidden');
-    header.classList.remove('hidden');
+    // Restore UI visibility
+    document.querySelector('nav').style.display = 'flex'; // or 'block'
+    document.querySelector('header').style.display = 'block';
     
     lightbox.classList.add('invisible', 'opacity-0');
     document.getElementById('playerContainer').innerHTML = ''; 
