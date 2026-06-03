@@ -45,6 +45,14 @@
     .animate-shake { animation: shake 0.3s ease-in-out; }
 
     body { overflow-x: hidden; width: 100%; }
+        /* This rule only kicks in on screens that are 768px wide or smaller (like phones) */
+@media (max-width: 768px) {
+  h1, .site-title {
+    font-size: 2rem; /* Shinks the title down so it fits nicely */
+    text-align: center; /* Centers it if it looks weird aligned left */
+    padding: 0 20px; /* Gives it some breathing room on the edges */
+  }
+}
     </style>
 </head>
 <body class="custom-scrollbar overflow-x-hidden">
