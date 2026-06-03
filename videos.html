@@ -202,11 +202,9 @@
                 <button onclick="closePlayer()" class="text-white/40 hover:text-white text-4xl leading-none">×</button>
             </div>
 
-    <!-- RE-DESIGNED CLEAN VIDEO FRAME CONTAINER -->
-<div class="flex-1 flex items-center justify-center p-2 sm:p-4 md:p-8 w-full max-w-4xl mx-auto">
-    <div id="playerContainer" class="w-full aspect-video relative rounded-[1rem] md:rounded-[2rem] shadow-2xl border border-white/10 overflow-hidden bg-black group">
-        <!-- The HTML5 Video and Minimal Play Indicator will inject here automatically via JS -->
-    </div>
+  <div class="flex-1 flex items-center justify-center p-2 sm:p-4 md:p-8 w-full max-w-4xl mx-auto">
+    <div id="playerContainer" class="w-full aspect-video relative rounded-[1rem] md:rounded-[2rem] shadow-2xl border border-white/10 overflow-hidden bg-black cursor-pointer group">
+        </div>
 </div>
         </div>
     </div>
@@ -316,45 +314,52 @@ function openPlayer(driveId, title) {
     
     playerContainer.innerHTML = '';
     
-    // Direct stream link to bypass Google's UI
-    const directStreamUrl = `https://docs.google.com/uc?export=download&id=${driveId}`;
+    // 1. Use the reliable preview link (enables automatic autoplay via query parameters)
+    const embedUrl = `https://drive.google.com/file/d/${driveId}/preview?autoplay=1&mute=0`;
     
-    // 1. Create the pure HTML5 Video element
-    const video = document.createElement('video');
-    video.src = directStreamUrl;
-    video.className = "w-full h-full object-contain";
-    video.playsInline = true;
-    video.controls = false; // Prevents any native playing bars from appearing
+    const iframe = document.createElement('iframe');
+    iframe.src = embedUrl;
     
-    // 2. Create a clean, centered Custom Play Button
+    // 2. THE SECRET INGREDIENT: pointer-events-none
+    // This stops mobile touches from waking up Google's internal play/timeline bars!
+    iframe.className = "absolute left-0 w-full border-0 pointer-events-none";
+    iframe.style.height = "136%";
+    iframe.style.top = "-18%"; 
+    
+    iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
+    iframe.setAttribute('allowfullscreen', 'true');
+    
+    // 3. Create the Custom Play Button Overlay
     const playBtn = document.createElement('div');
-    playBtn.className = "absolute inset-0 flex items-center justify-center bg-black/30 transition-opacity duration-300 pointer-events-none";
+    playBtn.className = "absolute inset-0 flex items-center justify-center bg-black/40 transition-opacity duration-300 opacity-0 pointer-events-none";
     playBtn.innerHTML = `
-        <div class="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center rounded-full bg-white/20 backdrop-blur-md border border-white/40 text-white shadow-xl transform transition-transform group-hover:scale-110">
+        <div class="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center rounded-full bg-white/25 backdrop-blur-md border border-white/40 text-white shadow-2xl transform transition-transform group-hover:scale-110">
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-8 h-8 sm:w-10 sm:h-10 ml-1">
                 <path d="M8 5v14l11-7z"/>
             </svg>
         </div>
     `;
     
-    // 3. Control Logic: Toggle Play/Pause on click
+    // State tracking since we are managing the overlay state manually
+    let isPlaying = true; // Google preview with autoplay=1 starts playing automatically
+    
+    // 4. Handle clicks on the container to toggle play/pause safely
     playerContainer.addEventListener('click', () => {
-        if (video.paused) {
-            video.play().catch(err => console.log("Autoplay blocked:", err));
-            playBtn.classList.add('opacity-0'); // Hide button when playing
+        if (!isPlaying) {
+            // Re-load the source to resume playing instantly without waking up UI bars
+            iframe.src = `https://drive.google.com/file/d/${driveId}/preview?autoplay=1&mute=0`;
+            playBtn.classList.add('opacity-0');
+            isPlaying = true;
         } else {
-            video.pause();
-            playBtn.classList.remove('opacity-0'); // Show button when paused
+            // Pointing to a blank source instantly pauses/stops the audio/video stream safely
+            iframe.src = 'about:blank';
+            playBtn.classList.remove('opacity-0');
+            isPlaying = false;
         }
     });
-
-    // Ensure button reappears if video ends
-    video.addEventListener('ended', () => {
-        playBtn.classList.remove('opacity-0');
-    });
     
-    // Assemble the clean player
-    playerContainer.appendChild(video);
+    // Assemble the components
+    playerContainer.appendChild(iframe);
     playerContainer.appendChild(playBtn);
     
     lightbox.classList.remove('invisible', 'opacity-0');
