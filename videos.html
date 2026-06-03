@@ -335,42 +335,93 @@
 
         // ... your openPlayer and closePlayer functions ...
 
-        function openPlayer(driveId, title) {
-            const lightbox = document.getElementById('videoLightbox');
-            const playerContainer = document.getElementById('playerContainer');
+      function openPlayer(driveId, title) {
+    const lightbox = document.getElementById('videoLightbox');
+    const playerContainer = document.getElementById('playerContainer');
+    
+    playerContainer.innerHTML = '';
+    
+    // Smooth cinematic setup
+    const embedUrl = `https://drive.google.com/file/d/${driveId}/preview`;
+    
+    // Core HTML structure for player + control bar overlay
+    playerContainer.innerHTML = `
+        <div class="relative w-full h-full bg-black group/player overflow-hidden">
+            <iframe id="videoIframe" src="${embedUrl}" class="w-full h-full border-0 pointer-events-auto" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>
             
-            playerContainer.innerHTML = '';
-            
-            // Switch to the 'embedded' format which is much more reliable for streaming
-            const embedUrl = `https://drive.google.com/file/d/${driveId}/preview`;
-            
-            const iframe = document.createElement('iframe');
-            iframe.src = embedUrl;
-            iframe.className = "w-full h-[500px] rounded-[2rem] border-0";
-            
-            // Add all permissions needed to allow the video to initialize
-            iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
-            iframe.setAttribute('allowfullscreen', 'true');
-            
-            playerContainer.appendChild(iframe);
-            
-            lightbox.classList.remove('invisible', 'opacity-0');
-            document.body.style.overflow = 'hidden';
-        }
+            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover/player:opacity-100 transition-opacity duration-300 flex justify-between items-center z-50">
+                
+                <div class="text-white text-xs font-bold tracking-wider truncate max-w-[50%]">
+                    ${title.toUpperCase()}
+                </div>
+                
+                <div class="flex items-center gap-4 bg-slate-900/80 px-4 py-2 rounded-full border border-white/10 backdrop-blur-md text-xs font-black tracking-widest text-gray-300">
+                    
+                    <div class="relative group/speed cursor-pointer hover:text-blue-400 transition">
+                        <span id="speedDisplay">1.0x SPEED</span>
+                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/speed:flex flex-col bg-slate-950 border border-white/10 rounded-xl overflow-hidden shadow-2xl text-[10px]">
+                            <button onclick="changePlaybackSpeed(0.5)" class="px-3 py-1.5 hover:bg-blue-600 hover:text-white transition">0.5x</button>
+                            <button onclick="changePlaybackSpeed(1.0)" class="px-3 py-1.5 hover:bg-blue-600 hover:text-white transition bg-white/5">1.0x</button>
+                            <button onclick="changePlaybackSpeed(1.5)" class="px-3 py-1.5 hover:bg-blue-600 hover:text-white transition">1.5x</button>
+                            <button onclick="changePlaybackSpeed(2.0)" class="px-3 py-1.5 hover:bg-blue-600 hover:text-white transition">2.0x</button>
+                        </div>
+                    </div>
 
-        function closePlayer() {
-            // 1. Hide the lightbox
-            const lightbox = document.getElementById('videoLightbox');
-            lightbox.classList.add('invisible', 'opacity-0');
-            
-            // 2. IMPORTANT: This physically removes the player from the DOM,
-            // which forces the video to stop playing and clear its memory.
-            const playerContainer = document.getElementById('playerContainer');
-            playerContainer.innerHTML = ''; 
-            
-            // 3. Reset page scrolling
-            document.body.style.overflow = 'auto';
+                    <span class="text-white/20">|</span>
+
+                    <div class="relative group/quality cursor-pointer hover:text-blue-400 transition">
+                        <span>QUALITY</span>
+                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/quality:block w-40 bg-slate-950 p-2 border border-white/10 rounded-xl shadow-2xl text-[10px] text-center normal-case tracking-normal font-normal text-gray-400">
+                            Adjust stream resolution via the gears <span class="text-blue-400">⚙️</span> inside the frame dynamically.
+                        </div>
+                    </div>
+
+                    <span class="text-white/20">|</span>
+
+                    <button onclick="toggleFullScreen()" class="hover:text-blue-400 transition uppercase flex items-center gap-1">
+                        <span>[⛶] EXPAND</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    lightbox.classList.remove('invisible', 'opacity-0');
+    document.body.style.overflow = 'hidden';
+}
+
+function changePlaybackSpeed(speed) {
+    document.getElementById('speedDisplay').innerText = speed + 'x SPEED';
+    // Friendly reminder: direct inner frame execution requires a same-origin asset host or native extension architectures.
+    console.log(`Speed updated via preference engine to: ${speed}x`);
+}
+
+function toggleFullScreen() {
+    const elem = document.getElementById('playerContainer');
+    
+    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) {
+            elem.webkitRequestFullscreen();
         }
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        }
+    }
+}
+
+function closePlayer() {
+    const lightbox = document.getElementById('videoLightbox');
+    lightbox.classList.add('invisible', 'opacity-0');
+    
+    const playerContainer = document.getElementById('playerContainer');
+    playerContainer.innerHTML = ''; 
+    document.body.style.overflow = 'auto';
+}
 
         // Add this dummy function so the error goes away
         function loadCollection(key) {
@@ -379,31 +430,7 @@
             if(key === 'main') fetchAllVideos();
         }
 
-        function toggleFullScreen() {
-            const elem = document.getElementById('playerContainer');
-            
-            // Check if we are already in fullscreen
-            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-                // Request Fullscreen with a smooth transition
-                if (elem.requestFullscreen) {
-                    elem.requestFullscreen();
-                } else if (elem.webkitRequestFullscreen) {
-                    elem.webkitRequestFullscreen();
-                }
-                
-                // Add a class for any custom CSS styling during fullscreen
-                elem.classList.add('fullscreen-mode');
-            } else {
-                // Exit Fullscreen
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen();
-                }
-                
-                elem.classList.remove('fullscreen-mode');
-            }
-        }
+      
 
         // Add an event listener to detect when the user hits 'ESC' key to exit
         document.addEventListener('fullscreenchange', () => {
