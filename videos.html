@@ -202,7 +202,7 @@
                 <button onclick="closePlayer()" class="text-white/40 hover:text-white text-4xl leading-none">×</button>
             </div>
 
-           <div class="flex-1 flex items-center justify-center p-2 sm:p-4 md:p-8 w-full max-w-4xl mx-auto">
+         <div class="flex-1 flex items-center justify-center p-2 sm:p-4 md:p-8 w-full max-w-4xl mx-auto">
     <div id="playerContainer" class="w-full aspect-video relative rounded-[1rem] md:rounded-[2rem] shadow-2xl border border-white/10 overflow-hidden bg-black">
         </div>
 </div>
@@ -308,7 +308,7 @@
             }
         }
 
-   function openPlayer(driveId, title) {
+function openPlayer(driveId, title) {
     const lightbox = document.getElementById('videoLightbox');
     const playerContainer = document.getElementById('playerContainer');
     
@@ -318,12 +318,12 @@
     const iframe = document.createElement('iframe');
     iframe.src = embedUrl;
     
-    // THE TOTAL REMOVAL CROP:
-    // Pushes the top bar up (-60px) and forces the bottom timeline/gear options bar 
-    // down past the viewable area by inflating the vertical canvas size (+115px).
-    iframe.className = "absolute left-0 w-full border-0";
-    iframe.style.top = "-60px";
-    iframe.style.height = "calc(100% + 115px)"; 
+    // THE OPTION ELIMINATOR:
+    // Expands the vertical canvas and centers it so the top menu 
+    // and bottom menu (quality gear, timeline) are permanently chopped off.
+    iframe.className = "absolute left-0 w-full border-0 pointer-events-auto";
+    iframe.style.height = "136%";
+    iframe.style.top = "-18%";
     
     iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
     iframe.setAttribute('allowfullscreen', 'true');
