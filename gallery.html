@@ -95,77 +95,86 @@
     
     
     
- /* =======================================================
-   PRECISION PLACEMENT & ALIGNMENT TUNING (Mobile Viewport)
+/* =======================================================
+   EXACT INDEX.HTML STRUCTURAL PLACEMENT MIRROR
    ======================================================= */
 @media screen and (max-width: 768px) {
-    /* Step 1: Force parent layout mechanics to honor index.html centering */
-    body, section, .relative {
+    /* 1. Force the exact parent structural container flow from index.html */
+    body, 
+    body > section, 
+    div.relative.min-h-\[calc\(100vh-80px\)\] {
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
-        text-align: center !important;
+        justify-content: flex-start !important;
+        text-center: center !important;
         width: 100% !important;
-    }
-
-    /* Step 2: Perfect matching position, padding, and layout bounds */
-    nav, .nav-zone {
-        position: sticky !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        z-index: 50 !important;
-        
-        /* Forces identical dimensions to index.html p-4 and gap-4 */
-        width: 100% !important;
-        max-width: 100vw !important;
-        padding: 1rem !important;  /* Strict p-4 match */
-        gap: 1rem !important;      /* Strict gap-4 match */
-        
-        /* Flex positioning fixes to avoid layout shifts or compression */
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: wrap !important;
-        justify-content: center !important;
-        align-items: center !important;
-        
-        /* Visual identity match from index.html source */
-        background-color: rgba(0, 0, 0, 0.8) !important;
-        backdrop-filter: blur(20px) !important;
-        -webkit-backdrop-filter: blur(20px) !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important; /* border-b border-white/5 */
-        
-        /* Kill accidental margins keeping it from stretching seamlessly */
+        min-height: 100vh !important;
+        padding: 0 !important;
         margin: 0 !important;
         box-sizing: border-box !important;
     }
 
-    /* Step 3: Exact button height alignment and line-spacing matching index text rules */
+    /* 2. EXACT Navigation placement, padding (p-4 md:p-8), gap (gap-4 md:gap-10), and backdrop styles */
+    nav, .nav-zone {
+        /* Position rules identical to index layout */
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 50 !important;
+        
+        /* Order placement force - pushes it to the exact top tracking sequence */
+        order: -1 !important; 
+        
+        /* Width adjustments matching index.html layout bounds */
+        width: 100% !important;
+        max-width: 100vw !important;
+        box-sizing: border-box !important;
+        
+        /* Exact translation of Tailwind utility classes from your index code on mobile */
+        display: flex !important;
+        flex-flow: row wrap !important;
+        justify-content: center !important;
+        align-items: center !important;
+        padding: 1rem !important;        /* Exact match for p-4 */
+        gap: 1rem !important;           /* Exact match for gap-4 */
+        
+        /* Precise visual matching styles */
+        background-color: rgba(0, 0, 0, 0.8) !important; /* bg-black/80 */
+        backdrop-filter: blur(20px) !important;           /* backdrop-blur-xl / blur(20px) */
+        -webkit-backdrop-filter: blur(20px) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important; /* border-b border-white/5 */
+        margin: 0 0 auto 0 !important;
+    }
+
+    /* 3. EXACT Typography & Layout Rules for Navigation Hyperlinks */
     nav a, .nav-zone a {
         font-size: 10px !important;              /* text-[10px] */
         font-weight: 700 !important;             /* font-bold */
         text-transform: uppercase !important;    /* uppercase */
         letter-spacing: 0.1em !important;        /* tracking-widest */
-        white-space: nowrap !important;          /* Keeps items cleanly on one line */
-        
-        /* Precision alignment spacing matching padding tweaks on your index pages */
-        padding-top: 0.25rem !important;
-        padding-bottom: 0.25rem !important;
-        padding-left: 0.5rem !important;
-        padding-right: 0.5rem !important;
+        white-space: nowrap !important;          /* Stops text breaking into two lines */
+        display: inline-block !important;
+        padding: 0 4px 4px 4px !important;       /* Matches pb-1 clearance tracking */
         margin: 0 !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
+        color: rgba(255, 255, 255, 0.6);        /* Non-active links look faded */
     }
 
-    /* Step 4: Fix layout spacing directly beneath the navigation element */
-    main {
-        margin-top: 0.5rem !important;
-        padding-left: 1.5rem !important;   /* px-6 */
-        padding-right: 1.5rem !important;  /* px-6 */
-        padding-top: 2.5rem !important;    /* py-10 */
+    /* Target the specific Active link style on gallery page if it exists */
+    nav a[href="gallery.html"], nav a.text-blue-400 {
+        color: #60a5fa !important;               /* text-blue-400 */
+        border-bottom: 1px solid #60a5fa !important; /* border-b border-blue-400 */
+    }
+
+    /* 4. EXACT Layout positioning for Content Wrapper beneath the navbar */
+    main, #collectionLobby, .max-w-7xl {
+        order: 0 !important;
         width: 100% !important;
+        max-width: 80rem !important;             /* max-w-7xl */
+        padding-left: 1.5rem !important;         /* px-6 */
+        padding-right: 1.5rem !important;        /* px-6 */
+        padding-top: 2.5rem !important;          /* py-10 */
+        margin-left: auto !important;
+        margin-right: auto !important;
         box-sizing: border-box !important;
     }
 }
