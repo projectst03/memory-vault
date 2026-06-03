@@ -353,24 +353,22 @@
     
     playerContainer.innerHTML = '';
     
-    // Use the reliable embed URL
+    // The clean embed URL
     const embedUrl = `https://drive.google.com/file/d/${driveId}/preview`;
     
     playerContainer.innerHTML = `
         <div id="playerWrapper" class="relative w-full h-full bg-black group/player overflow-hidden">
-            <iframe id="videoIframe" src="${embedUrl}" class="w-full h-full border-0" allow="autoplay; fullscreen"></iframe>
+            <iframe id="videoIframe" src="${embedUrl}" class="w-full h-full border-0" allow="autoplay; fullscreen" allowfullscreen></iframe>
             
-            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover/player:opacity-100 transition-opacity duration-300 flex justify-between items-center z-50">
-                <div class="text-white text-[10px] font-bold tracking-widest uppercase truncate w-1/3">
-                    ${title}
+            <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover/player:opacity-100 transition-opacity duration-500 flex justify-between items-end z-50">
+                
+                <div class="text-white font-bold tracking-[0.2em] uppercase text-xs">
+                    ${title.toUpperCase()}
                 </div>
                 
-                <div class="flex items-center gap-2 bg-black/50 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 text-[9px] font-black uppercase tracking-widest">
-                    <span class="text-gray-400">Controls:</span>
-                    <button onclick="alert('Playback speed is managed natively by Google. Click the Settings gear ⚙️ inside the video player to change speed.')" class="hover:text-blue-400">Speed</button>
-                    <span class="text-white/20">|</span>
-                    <button onclick="toggleFullScreen()" class="hover:text-blue-400">Fullscreen</button>
-                </div>
+                <button onclick="toggleFullScreen()" class="text-white hover:text-blue-400 transition uppercase tracking-[0.2em] text-xs font-black">
+                    [⛶] Fullscreen
+                </button>
             </div>
         </div>
     `;
@@ -380,24 +378,25 @@
 }
 
 function toggleFullScreen() {
-    const elem = document.getElementById('videoLightbox'); // Target the lightbox, not just the container
+    const elem = document.getElementById('videoLightbox');
     if (!document.fullscreenElement) {
-        elem.requestFullscreen().catch(err => alert(`Error: ${err.message}`));
+        elem.requestFullscreen().catch(err => console.log(err));
     } else {
         document.exitFullscreen();
     }
 }
 
-
-
-
 function closePlayer() {
     const lightbox = document.getElementById('videoLightbox');
     lightbox.classList.add('invisible', 'opacity-0');
-    
     const playerContainer = document.getElementById('playerContainer');
     playerContainer.innerHTML = ''; 
     document.body.style.overflow = 'auto';
+    
+    // Ensure we exit full screen if it was active
+    if (document.fullscreenElement) {
+        document.exitFullscreen();
+    }
 }
 
         // Add this dummy function so the error goes away
