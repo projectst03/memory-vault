@@ -158,71 +158,87 @@ h2 {
 
 
 
-        /* =======================================================
-   EXACT INDEX.HTML MOBILE SPECIFICATIONS ALIGNMENT PATCH
+      /* =======================================================
+   COMPLETE SITE UNIFICATION & MOBILE REALIGNMENT PATCH
    ======================================================= */
+
+/* 1. Force Desktop & Mobile Navbar to match TimeLessVibe/Gallery exactly */
+nav {
+    position: sticky !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    background: rgba(0, 0, 0, 0.8) !important;       /* Frosted glass alpha layer */
+    backdrop-filter: blur(20px) !important;         /* Standard site blur filter */
+    -webkit-backdrop-filter: blur(20px) !important; /* Safari compatibility */
+    border-b: 1px solid rgba(255, 255, 255, 0.05) !important; /* Bottom grid line separator */
+    z-index: 50 !important;
+    padding: 2rem !important;                       /* Aligns standard desktop p-8 padding */
+}
+
+/* Re-adjust header padding now that the navbar structural layout is sticky */
+header {
+    padding-top: 3.5rem !important;
+    margin-bottom: 4rem !important;
+    opacity: 1 !important;
+}
+
+/* 2. Responsive Mobile System Alignment (Matches Index / Gallery Rules) */
 @media screen and (max-width: 768px) {
-    /* 1. Reset Navbar Padding, Gaps, and Text Sizes */
     nav {
-        padding: 1rem !important;              /* Clones index.html layout behavior */
-        gap: 0.75rem !important;               /* Compresses spacing to avoid item wrapping */
+        padding: 1rem !important;              /* Aligns with home page mobile frame padding */
+        gap: 1rem !important;                  /* Keeps navigation options on a single row line */
     }
 
     nav a {
-        font-size: 10px !important;            /* Downscales text sizing */
-        letter-spacing: 0.05em !important;    /* Tightens tracking for fluid mobile width */
-        padding-bottom: 4px !important;       /* Keeps current link active indicator line tidy */
+        font-size: 10px !important;            /* Scales down typography bounds */
+        letter-spacing: 0.1em !important;
+        padding-bottom: 4px !important;       /* Clears active line border indicators */
     }
 
-    /* 2. Rescale Main Heading to prevent viewport clipping */
+    /* Rescale main text header to match index page scales */
     h1, .text-7xl {
-        font-size: 2.25rem !important;         /* Synchronizes scaling with index h1 text-4xl */
-        line-height: 1.2 !important;           /* Safeguards against word overlap rules */
-        margin-bottom: 0.5rem !important;
-        letter-spacing: -0.02em !important;
+        font-size: 2.25rem !important;         /* Matches index.html text-4xl size rule */
+        line-height: 1.1 !important;
+        letter-spacing: -0.05em !important;    /* Tightens tracking down to index layout limits */
+        margin-bottom: 1rem !important;
     }
 
-    /* 3. Re-adjust header structural margins and subtitles */
     header {
-        padding-top: 4.5rem !important;        /* Prevents overlapping behind absolute navbar */
-        margin-bottom: 2.5rem !important;      /* Tames oversized desktop 6rem spacing block */
+        padding-top: 2rem !important;          /* Tames spacing bloat on smaller devices */
+        margin-bottom: 2rem !important;
     }
 
     #vaultSubtitle {
-        font-size: 9px !important;
-        letter-spacing: 0.25em !important;     /* Compresses wide layout tracking bounds */
+        font-size: 10px !important;
+        letter-spacing: 0.4em !important;      /* Restores clean cinematic tracking layout spacing */
     }
 
-    /* 4. Optimize Dynamic Grid Container Area */
+    /* Realign internal grid structure wrappers */
     #collectionGrid {
-        padding: 1rem !important;              /* Reclaims valuable horizontal side margins */
-        border-radius: 1.5rem !important;       /* Softens layout borders gracefully */
+        padding: 1.25rem !important;           /* Reclaims edge display real estate */
+        border-radius: 1.5rem !important;       /* Softens hard layout corners smoothly */
+        gap: 1.5rem !important;
     }
 
-    /* Downscale dynamically loaded collection section headings */
+    /* Scales loaded collections title headers (e.g. WHITE COLLECTION) */
     #collectionGrid h2.text-3xl {
-        font-size: 1.35rem !important;         /* Scales down White Collection, Gala headers etc. */
-        letter-spacing: 0.1em !important;
+        font-size: 1.5rem !important;          
+        letter-spacing: 0.15em !important;
     }
 
-    /* 5. CRITICAL FIX: Overrides Fixed 500px Video Height Bug */
+    /* 3. Widescreen Video Frame Optimization Patch */
     #playerContainer {
-        height: auto !important;               /* Neutralizes strict 500px height constraint */
-        aspect-ratio: 16 / 9 !important;       /* Locks video stream box into responsive widescreen */
-        border-radius: 1rem !important;
+        height: auto !important;               /* Strips broken height restraints */
+        aspect-ratio: 16 / 9 !important;       /* Locks dynamic wrapper window to standard 16:9 widescreen */
+        border-radius: 1.25rem !important;
     }
 
     #playerContainer iframe {
-        height: 100% !important;               /* Forces injected Drive iframe to scale smoothly */
-        border-radius: 1rem !important;
-    }
-    
-    /* Optimize Lightbox control button headers */
-    #videoLightbox > div:first-child {
-        padding: 1rem 0.5rem !important;
+        height: 100% !important;               /* Forces player runtime viewport scaling */
+        border-radius: 1.25rem !important;
     }
 }
-
 
 
 
