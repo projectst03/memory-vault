@@ -202,9 +202,11 @@
                 <button onclick="closePlayer()" class="text-white/40 hover:text-white text-4xl leading-none">×</button>
             </div>
 
-       <div class="flex-1 flex items-center justify-center p-2 sm:p-4 md:p-8 w-full max-w-4xl mx-auto">
-    <div id="playerContainer" class="w-full aspect-video relative rounded-[1rem] md:rounded-[2rem] shadow-2xl border border-white/10 overflow-hidden bg-black">
-        </div>
+    <!-- RE-DESIGNED CLEAN VIDEO FRAME CONTAINER -->
+<div class="flex-1 flex items-center justify-center p-2 sm:p-4 md:p-8 w-full max-w-4xl mx-auto">
+    <div id="playerContainer" class="w-full aspect-video relative rounded-[1rem] md:rounded-[2rem] shadow-2xl border border-white/10 overflow-hidden bg-black group">
+        <!-- The HTML5 Video and Minimal Play Indicator will inject here automatically via JS -->
+    </div>
 </div>
         </div>
     </div>
@@ -314,28 +316,47 @@ function openPlayer(driveId, title) {
     
     playerContainer.innerHTML = '';
     
-    // Bypasses the Google Player UI entirely to stream the raw video data
+    // Direct stream link to bypass Google's UI
     const directStreamUrl = `https://docs.google.com/uc?export=download&id=${driveId}`;
     
+    // 1. Create the pure HTML5 Video element
     const video = document.createElement('video');
     video.src = directStreamUrl;
-    
-    // Configuration: Web standard playback without any control overlays
     video.className = "w-full h-full object-contain";
     video.playsInline = true;
-    video.controls = false; // This strips away the playing bar entirely
-    video.autoplay = true;
+    video.controls = false; // Prevents any native playing bars from appearing
     
-    // Simple Interaction: Tap the video anywhere to seamlessly play or pause
-    video.addEventListener('click', () => {
+    // 2. Create a clean, centered Custom Play Button
+    const playBtn = document.createElement('div');
+    playBtn.className = "absolute inset-0 flex items-center justify-center bg-black/30 transition-opacity duration-300 pointer-events-none";
+    playBtn.innerHTML = `
+        <div class="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center rounded-full bg-white/20 backdrop-blur-md border border-white/40 text-white shadow-xl transform transition-transform group-hover:scale-110">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-8 h-8 sm:w-10 sm:h-10 ml-1">
+                <path d="M8 5v14l11-7z"/>
+            </svg>
+        </div>
+    `;
+    
+    // 3. Control Logic: Toggle Play/Pause on click
+    playerContainer.addEventListener('click', () => {
         if (video.paused) {
-            video.play();
+            video.play().catch(err => console.log("Autoplay blocked:", err));
+            playBtn.classList.add('opacity-0'); // Hide button when playing
         } else {
             video.pause();
+            playBtn.classList.remove('opacity-0'); // Show button when paused
         }
     });
+
+    // Ensure button reappears if video ends
+    video.addEventListener('ended', () => {
+        playBtn.classList.remove('opacity-0');
+    });
     
+    // Assemble the clean player
     playerContainer.appendChild(video);
+    playerContainer.appendChild(playBtn);
+    
     lightbox.classList.remove('invisible', 'opacity-0');
     document.body.style.overflow = 'hidden';
 }
