@@ -134,6 +134,74 @@ h2 {
     transform: scale(1);
     opacity: 1;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =======================================================
+   EXACT INDEX.HTML MOBILE SPECIFICATIONS ALIGNMENT PATCH
+   ======================================================= */
+@media screen and (max-width: 768px) {
+    /* 1. Reset Navbar Padding, Gaps, and Text Sizes to match Index exactly */
+    nav {
+        padding: 1rem !important;              /* Clones index.html p-4 */
+        gap: 1rem !important;                 /* Clones index.html gap-4 */
+    }
+
+    nav a {
+        font-size: 10px !important;            /* Clones index.html text-[10px] */
+        letter-spacing: 0.1em !important;     /* Clones index.html tracking-widest */
+        padding-bottom: 4px !important;       /* Matches pb-1 clearance for the active border */
+    }
+
+    /* 2. Rescale Title to match the Index page's h1 text-4xl size */
+    h1, .text-7xl {
+        font-size: 2.25rem !important;         /* Clones index.html text-4xl exactly */
+        line-height: 1.1 !important;           /* Adjusted for stacked word safety */
+        margin-bottom: 1rem !important;        /* Clones mb-4 */
+        letter-spacing: -0.05em !important;    /* Clones tracking-tighter */
+    }
+
+    /* 3. Re-adjust header positions and text sizes */
+    header, #galleryHeader {
+        padding-top: 0px !important;           /* Neutralizes the desktop pt-17 displacement */
+        padding-bottom: 2.5rem !important;    /* Matches pb-10 */
+    }
+
+    #vaultSubtitle {
+        font-size: 10px !important;            /* Clones index subtitle font size */
+        letter-spacing: 0.4em !important;      /* Clones tracking-[0.4em] from index components */
+    }
+
+    /* 4. Ensure grid layouts stay safe on compact phone frames */
+    #collectionLobby {
+        gap: 1.5rem !important;                /* Prevents cards from overcrowding */
+    }
+    
+    #collectionLobby h2.text-4xl {
+        font-size: 1.75rem !important;         /* Keeps card header scales crisp and within borders */
+        line-height: 1.1 !important;
+    }
+}
+
+
+
+
+
+
+
+
+
+        
     </style>
 </head>
 <body class="custom-scrollbar">
