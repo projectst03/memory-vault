@@ -45,14 +45,6 @@
     .animate-shake { animation: shake 0.3s ease-in-out; }
 
     body { overflow-x: hidden; width: 100%; }
-        /* This rule only kicks in on screens that are 768px wide or smaller (like phones) */
-@media (max-width: 768px) {
-  h1, .site-title {
-    font-size: 2rem; /* Shinks the title down so it fits nicely */
-    text-align: center; /* Centers it if it looks weird aligned left */
-    padding: 0 20px; /* Gives it some breathing room on the edges */
-  }
-}
     </style>
 </head>
 <body class="custom-scrollbar overflow-x-hidden">
@@ -79,7 +71,7 @@
     </div>
     <div class="video-overlay absolute top-0 left-0 w-full h-full z-10"></div>
 
-    <nav class="p-8 flex justify-center gap-10 text-xs uppercase tracking-widest font-bold border-b border-white/5 bg-black/80 backdrop-blur-xl sticky top-0 z-50">
+    <nav class="p-4 md:p-8 flex flex-wrap justify-center gap-4 md:gap-10 text-[10px] md:text-xs uppercase tracking-widest font-bold border-b border-white/5 bg-black/80 backdrop-blur-xl sticky top-0 z-50">
         <a href="index.html" class="text-blue-400 border-b border-blue-400 pb-1">Home</a>
         <a href="gallery.html" class="hover:text-blue-400 transition">Gallery</a>
         <a href="TimeLessVibe.html" class="hover:text-blue-400 transition">TimeLessVibe</a>
@@ -91,7 +83,7 @@
 
     <main class="max-w-7xl mx-auto px-6 py-10 relative z-10">
         <header class="text-center w-full">
-           <h1 class="text-7xl md:text-7.9xl font-black tracking-tighter italic mb-4 uppercase leading-none">
+           <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter italic mb-4 uppercase leading-none break-words">
                 MEMORIES <span class="text-blue-500">LIVE</span> FOREVER
             </h1>
             <p class="text-base md:text-2xl italic font-serif leading-relaxed mb-8 md:mb-12 bg-gradient-to-r from-blue-200 via-white to-blue-200 bg-clip-text text-transparent opacity-90 mx-auto max-w-3xl px-2">
@@ -121,7 +113,7 @@
         </div>
         
     </main>
-    <footer class="flex-1 max-w-7xl mx-auto px-1 py-32 relative z-10 w=full text-center opacity-35 text-[8px] md:text-xs uppercase tracking-[0.3em] md:tracking-[0.5em] py-1 px-1 mt-auto">
+    <footer class="flex-1 max-w-7xl mx-auto px-4 py-16 relative z-10 w=full text-center opacity-35 text-[8px] md:text-xs uppercase tracking-[0.3em] md:tracking-[0.5em] py-1 px-1 mt-auto">
     Batch 2022-2026 • The Journey Continues
 </footer>
 </section>
@@ -129,7 +121,7 @@
 <div id="videoModal" class="fixed inset-0 z-[100] hidden bg-black/95 backdrop-blur-2xl flex items-center justify-center p-4 md:p-8">
     <button onclick="closeCollegeVideo()" class="absolute top-4 right-4 md:top-6 md:right-6 text-white/50 hover:text-white text-3xl md:text-5xl transition-all z-[120]">&times;</button>
     
-    <div class="w-full max-w-7xl flex flex-col md:flex-row gap-6 h-[90vh] md:h-[85vh] py-12 md:py-0">
+   <div class="w-full max-w-7xl flex flex-col md:flex-row gap-6 h-auto md:h-[85vh] py-4 md:py-0 overflow-y-auto md:overflow-hidden">
         <div class="flex-grow bg-black rounded-3xl overflow-hidden shadow-2xl relative flex flex-col min-h-[40%] md:min-h-0">
             <div id="videoContainer" class="flex-grow relative bg-black flex items-center justify-center overflow-hidden">
                 <video id="mainVideo" class="max-w-full max-h-full object-contain" controls playsinline></video>
