@@ -157,13 +157,53 @@ h2 {
 
 
 
+/* =======================================================
+   COMPLETE MASTER SITE UNIFICATION & NAVIGATION PATCH
+   ======================================================= */
 
-     /* 2. Rescale Main Heading to prevent viewport clipping */
+/* 1. Desktop Navbar Sticky Style (Matches Gallery/TimeLessVibe) */
+nav {
+    position: sticky !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    background: rgba(0, 0, 0, 0.8) !important;       /* Frosted glass alpha layer */
+    backdrop-filter: blur(20px) !important;         /* Standard site blur filter */
+    -webkit-backdrop-filter: blur(20px) !important; /* Safari compatibility */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important; /* Fixed syntax property */
+    z-index: 50 !important;
+    padding: 2rem !important;                       /* Standard desktop spacing */
+}
+
+/* Reset header layout padding now that the navbar is sticky */
+header {
+    padding-top: 3.5rem !important;
+    margin-bottom: 4rem !important;
+    opacity: 1 !important;
+}
+
+/* 2. Full Responsive System Rules (Mobile & Tablet) */
+@media screen and (max-width: 768px) {
+    
+    /* Fixes the navigation bar layout on mobile frames */
+    nav {
+        padding: 1rem !important;              /* Shrinks wrapper padding to match index */
+        gap: 0.75rem !important;               /* Compresses item gaps so links stay on one line */
+        justify-content: center !important;
+    }
+
+    nav a {
+        font-size: 10px !important;            /* Clean mobile typography scale */
+        letter-spacing: 0.05em !important;     /* Fits all 4 links safely across screen width */
+        padding-bottom: 4px !important;
+    }
+
+    /* Tames the 17-letter UNWRITTENCHAPTERS heading */
     h1, .text-7xl {
-        font-size: 1.85rem !important;        /* Extra step down because it is a single 17-letter word with no spaces! */
+        font-size: 1.85rem !important;         
         line-height: 1.1 !important;           
         margin-bottom: 1rem !important;
-        letter-spacing: -0.04em !important;    /* Clean cinematic compression */
+        letter-spacing: -0.04em !important;    
     }
 
     header {
@@ -176,27 +216,26 @@ h2 {
         letter-spacing: 0.4em !important;      
     }
 
-    /* NEW ADDITION: Force-shrinks the hardcoded inline 2rem text on the cinematic loading screen */
+    /* Fixes the hardcoded 2rem text on the cinematic loading screen */
     #loadingScreen h2 {
-        font-size: 1.2rem !important;          /* Scales down cleanly on mobile displays */
-        letter-spacing: 0.05em !important;     /* Prevents letter splitting overflow */
-        padding: 0 1.5rem !important;          /* Safety padding on screen edges */
+        font-size: 1.2rem !important;          
+        letter-spacing: 0.05em !important;     
+        padding: 0 1.5rem !important;          
     }
 
-    /* 4. Optimize Dynamic Grid Container Area */
+    /* Responsive Grid & Content Space Adjustments */
     #collectionGrid {
         padding: 1.25rem !important;           
         border-radius: 1.5rem !important;       
         gap: 1.5rem !important;
     }
 
-    /* Scales loaded collections title headers (e.g. WHITE COLLECTION) */
     #collectionGrid h2.text-3xl {
         font-size: 1.5rem !important;          
         letter-spacing: 0.15em !important;
     }
 
-    /* 3. Widescreen Video Frame Optimization Patch */
+    /* Responsive 16:9 Video Frame scaling overrides */
     #playerContainer {
         height: auto !important;               
         aspect-ratio: 16 / 9 !important;       
@@ -207,6 +246,7 @@ h2 {
         height: 100% !important;               
         border-radius: 1.25rem !important;
     }
+}
 
 
 
