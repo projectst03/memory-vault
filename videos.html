@@ -147,49 +147,79 @@ h2 {
 
 
 
-/* =======================================================
+
+
+
+
+
+
+
+
+
+
+
+        /* =======================================================
    EXACT INDEX.HTML MOBILE SPECIFICATIONS ALIGNMENT PATCH
    ======================================================= */
 @media screen and (max-width: 768px) {
-    /* 1. Reset Navbar Padding, Gaps, and Text Sizes to match Index exactly */
+    /* 1. Reset Navbar Padding, Gaps, and Text Sizes */
     nav {
-        padding: 1rem !important;              /* Clones index.html p-4 */
-        gap: 1rem !important;                 /* Clones index.html gap-4 */
+        padding: 1rem !important;              /* Clones index.html layout behavior */
+        gap: 0.75rem !important;               /* Compresses spacing to avoid item wrapping */
     }
 
     nav a {
-        font-size: 10px !important;            /* Clones index.html text-[10px] */
-        letter-spacing: 0.1em !important;     /* Clones index.html tracking-widest */
-        padding-bottom: 4px !important;       /* Matches pb-1 clearance for the active border */
+        font-size: 10px !important;            /* Downscales text sizing */
+        letter-spacing: 0.05em !important;    /* Tightens tracking for fluid mobile width */
+        padding-bottom: 4px !important;       /* Keeps current link active indicator line tidy */
     }
 
-    /* 2. Rescale Title to match the Index page's h1 text-4xl size */
+    /* 2. Rescale Main Heading to prevent viewport clipping */
     h1, .text-7xl {
-        font-size: 2.25rem !important;         /* Clones index.html text-4xl exactly */
-        line-height: 1.1 !important;           /* Adjusted for stacked word safety */
-        margin-bottom: 1rem !important;        /* Clones mb-4 */
-        letter-spacing: -0.05em !important;    /* Clones tracking-tighter */
+        font-size: 2.25rem !important;         /* Synchronizes scaling with index h1 text-4xl */
+        line-height: 1.2 !important;           /* Safeguards against word overlap rules */
+        margin-bottom: 0.5rem !important;
+        letter-spacing: -0.02em !important;
     }
 
-    /* 3. Re-adjust header positions and text sizes */
-    header, #galleryHeader {
-        padding-top: 0px !important;           /* Neutralizes the desktop pt-17 displacement */
-        padding-bottom: 2.5rem !important;    /* Matches pb-10 */
+    /* 3. Re-adjust header structural margins and subtitles */
+    header {
+        padding-top: 4.5rem !important;        /* Prevents overlapping behind absolute navbar */
+        margin-bottom: 2.5rem !important;      /* Tames oversized desktop 6rem spacing block */
     }
 
     #vaultSubtitle {
-        font-size: 10px !important;            /* Clones index subtitle font size */
-        letter-spacing: 0.4em !important;      /* Clones tracking-[0.4em] from index components */
+        font-size: 9px !important;
+        letter-spacing: 0.25em !important;     /* Compresses wide layout tracking bounds */
     }
 
-    /* 4. Ensure grid layouts stay safe on compact phone frames */
-    #collectionLobby {
-        gap: 1.5rem !important;                /* Prevents cards from overcrowding */
+    /* 4. Optimize Dynamic Grid Container Area */
+    #collectionGrid {
+        padding: 1rem !important;              /* Reclaims valuable horizontal side margins */
+        border-radius: 1.5rem !important;       /* Softens layout borders gracefully */
+    }
+
+    /* Downscale dynamically loaded collection section headings */
+    #collectionGrid h2.text-3xl {
+        font-size: 1.35rem !important;         /* Scales down White Collection, Gala headers etc. */
+        letter-spacing: 0.1em !important;
+    }
+
+    /* 5. CRITICAL FIX: Overrides Fixed 500px Video Height Bug */
+    #playerContainer {
+        height: auto !important;               /* Neutralizes strict 500px height constraint */
+        aspect-ratio: 16 / 9 !important;       /* Locks video stream box into responsive widescreen */
+        border-radius: 1rem !important;
+    }
+
+    #playerContainer iframe {
+        height: 100% !important;               /* Forces injected Drive iframe to scale smoothly */
+        border-radius: 1rem !important;
     }
     
-    #collectionLobby h2.text-4xl {
-        font-size: 1.75rem !important;         /* Keeps card header scales crisp and within borders */
-        line-height: 1.1 !important;
+    /* Optimize Lightbox control button headers */
+    #videoLightbox > div:first-child {
+        padding: 1rem 0.5rem !important;
     }
 }
 
