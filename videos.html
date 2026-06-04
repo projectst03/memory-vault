@@ -310,20 +310,22 @@
                     
                     // Add Cards
                     filtered.forEach((item) => {
-                        const action = `openPlayer('${item.driveId}', '${item.title}')`;
-                        const thumbSrc = `https://lh3.googleusercontent.com/d/${item.driveId}=w600`;
-                        
-                        grid.innerHTML += `
-                            <div onclick="${action}" class="folder-card p-3 rounded-[2.5rem] cursor-pointer group overflow-hidden transition-all duration-500 hover:scale-[1.02]">
-                                <div class="aspect-video bg-gray-900 rounded-[2rem] overflow-hidden relative shadow-lg">
-                                    <img src="${thumbSrc}" 
-                                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                                    <div class="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                        <span class="text-4xl text-white">▶</span>
-                                    </div>
-                                </div>
-                            </div>`;
+                        // ... inside your filtered.forEach loop
+const action = `openPlayer('${item.driveId}', '${item.title}')`;
+// Corrected Thumbnail URL structure
+const thumbSrc = `https://lh3.googleusercontent.com/d/${item.driveId}=w600`;
+
+grid.innerHTML += `
+    <div onclick="${action}" class="folder-card p-3 rounded-[2.5rem] cursor-pointer group overflow-hidden transition-all duration-500 hover:scale-[1.02]">
+        <div class="aspect-video bg-gray-900 rounded-[2rem] overflow-hidden relative shadow-lg">
+            <img src="${thumbSrc}" 
+                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+            <div class="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <span class="text-4xl text-white">▶</span>
+            </div>
+        </div>
+    </div>`;
                     });
                 }
             });
