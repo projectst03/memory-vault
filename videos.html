@@ -170,6 +170,28 @@
                 line-height: 1.1 !important;
             }
         }
+
+
+
+
+
+
+@media screen and (max-width: 768px) {
+    #playerContainer {
+        height: 300px !important; /* Smaller height for mobile to keep controls visible */
+    }
+    /* This forces the Google UI to be slightly less obtrusive */
+    #playerContainer iframe {
+        pointer-events: auto;
+    }
+}
+
+
+
+
+
+
+        
     </style>
 </head>
 <body class="custom-scrollbar overflow-x-hidden">
@@ -337,28 +359,25 @@ grid.innerHTML += `
 
         // ... your openPlayer and closePlayer functions ...
 
-        function openPlayer(driveId, title) {
-            const lightbox = document.getElementById('videoLightbox');
-            const playerContainer = document.getElementById('playerContainer');
+      function openPlayer(driveId, title) {
+    const lightbox = document.getElementById('videoLightbox');
+    const playerContainer = document.getElementById('playerContainer');
+    
+    playerContainer.innerHTML = `
+        <div class="relative w-full h-full">
+            <div class="absolute top-0 left-0 w-full h-[60px] z-10 bg-transparent"></div>
             
-            playerContainer.innerHTML = '';
-            
-            // Switch to the 'embedded' format which is much more reliable for streaming
-            const embedUrl = `https://drive.google.com/file/d/${driveId}/preview`;
-            
-            const iframe = document.createElement('iframe');
-            iframe.src = embedUrl;
-            iframe.className = "w-full h-[500px] rounded-[2rem] border-0";
-            
-            // Add all permissions needed to allow the video to initialize
-            iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
-            iframe.setAttribute('allowfullscreen', 'true');
-            
-            playerContainer.appendChild(iframe);
-            
-            lightbox.classList.remove('invisible', 'opacity-0');
-            document.body.style.overflow = 'hidden';
-        }
+            <iframe src="https://drive.google.com/file/d/${driveId}/preview" 
+                    class="w-full h-full border-0"
+                    allow="autoplay; fullscreen"
+                    allowfullscreen>
+            </iframe>
+        </div>
+    `;
+    
+    lightbox.classList.remove('invisible', 'opacity-0');
+    document.body.style.overflow = 'hidden';
+}
 
         function closePlayer() {
             // 1. Hide the lightbox
