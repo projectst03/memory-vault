@@ -49,7 +49,7 @@
         }
 
         #videoLightbox {
-            background: rgba(0, 0, 0, 0.9) !important;
+            background: rgba(0, 0, 0, 0.95) !important;
             backdrop-filter: blur(15px);
         }
 
@@ -99,12 +99,14 @@
             width: 100% !important;
         }
         #playerContainer {
-            /* Set up the smooth transition for width and height */
             transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
             position: relative;
             width: 100%;
-            max-width: 1024px; /* Matches your current container */
+            max-width: 1024px; 
             height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* This class will be added via JS to trigger the "Full Screen" look */
@@ -129,59 +131,55 @@
            EXACT INDEX.HTML MOBILE SPECIFICATIONS ALIGNMENT PATCH
            ======================================================= */
         @media screen and (max-width: 768px) {
-            /* 1. Reset Navbar Padding, Gaps, and Text Sizes to match Index exactly */
             nav {
-                padding: 1rem !important;              /* Clones index.html p-4 */
-                gap: 1rem !important;                 /* Clones index.html gap-4 */
+                padding: 1rem !important;              
+                gap: 1rem !important;                 
             }
 
             nav a {
-                font-size: 10px !important;            /* Clones index.html text-[10px] */
-                letter-spacing: 0.1em !important;     /* Clones index.html tracking-widest */
-                padding-bottom: 4px !important;       /* Matches pb-1 clearance for the active border */
+                font-size: 10px !important;            
+                letter-spacing: 0.1em !important;     
+                padding-bottom: 4px !important;       
             }
 
-            /* 2. Rescale Title to match the Index page's h1 text-4xl size */
             h1, .text-7xl {
-                font-size: 2.25rem !important;         /* Clones index.html text-4xl exactly */
-                line-height: 1 !important;             /* Clones leading-none */
-                margin-bottom: 1rem !important;        /* Clones mb-4 */
-                letter-spacing: -0.05em !important;    /* Clones tracking-tighter */
+                font-size: 2.25rem !important;         
+                line-height: 1 !important;             
+                margin-bottom: 1rem !important;        
+                letter-spacing: -0.05em !important;    
             }
 
-            /* 3. Re-adjust header positions and text sizes */
             header {
-                padding-top: 0px !important;           /* Neutralizes the desktop pt-17 displacement */
-                padding-bottom: 1rem !important;       /* Tightened mobile padding */
+                padding-top: 0px !important;           
+                padding-bottom: 1rem !important;       
             }
 
             #vaultSubtitle {
-                font-size: 10px !important;            /* Clones index subtitle font size */
-                letter-spacing: 0.4em !important;      /* Clones tracking-[0.4em] from index components */
+                font-size: 10px !important;            
+                letter-spacing: 0.4em !important;      
             }
 
-            /* 4. Ensure grid layouts stay safe on compact phone frames */
             #collectionLobby {
-                gap: 1.5rem !important;                /* Prevents cards from overcrowding */
+                gap: 1.5rem !important;                
             }
             
             #collectionLobby h2.text-4xl {
-                font-size: 1.75rem !important;         /* Keeps card header scales crisp and within borders */
+                font-size: 1.75rem !important;         
                 line-height: 1.1 !important;
             }
 
-            /* Mobile-specific iframe constraint rule */
-            #playerContainer, #playerContainer iframe {
-                height: 300px !important;              /* Scaled-down heights for phone viewports */
-                border-radius: 1.25rem !important;     /* Slightly subtler rounded look for mobile scales */
+            /* Responsive tweaks to container */
+            #playerContainer {
+                height: auto !important;
+                aspect-ratio: 16 / 9;
             }
         }
-        /* Make elements tiny and faded */
+        
         .ui-mini {
             transform: scale(0.7);
             opacity: 0.3;
             transition: all 0.5s ease;
-            pointer-events: none; /* Prevents accidental clicks */
+            pointer-events: none; 
         }
     </style>
 </head>
@@ -214,15 +212,15 @@
 
         <div id="videoLightbox" class="fixed inset-0 z-[100] invisible opacity-0 flex flex-col items-center p-4">
             <div class="w-full flex justify-between items-center p-4 max-w-7xl md:p-6">
-                <div class="flex gap-4 md:gap-8 text-[9px] md:text-[10px] uppercase tracking-[0.2em] md:tracking-[0.3em] font-black">
-                    <button onclick="closePlayer(); loadCollection('main')" class="text-blue-500 hover:text-white transition bg-white/5 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/5 md:bg-transparent md:p-0 md:border-none">Home</button>
-                    <button onclick="closePlayer()" class="text-gray-400 hover:text-white transition bg-white/5 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/5 md:bg-transparent md:p-0 md:border-none">Back</button>
+                <div class="flex gap-3 md:gap-8 text-[9px] md:text-[10px] uppercase tracking-[0.2em] md:tracking-[0.3em] font-black">
+                    <button onclick="closePlayer(); loadCollection('main')" class="text-blue-500 hover:text-white transition bg-white/5 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/5 md:bg-transparent md:p-0 md:border-none">Home</button>
+                    <button onclick="closePlayer()" class="text-gray-400 hover:text-white transition bg-white/5 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/5 md:bg-transparent md:p-0 md:border-none">Back</button>
                 </div>
-                <button onclick="closePlayer()" class="text-white/40 hover:text-white text-2xl md:text-4xl leading-none bg-black/40 backdrop-blur-sm w-8 h-8 rounded-full flex items-center justify-center border border-white/10 md:bg-transparent md:w-auto md:h-auto md:border-none">×</button>
+                <button onclick="closePlayer()" class="text-white/60 hover:text-white text-xl md:text-3xl leading-none bg-white/5 backdrop-blur-md w-8 h-8 rounded-full flex items-center justify-center border border-white/5 md:bg-transparent md:w-auto md:h-auto md:border-none">×</button>
             </div>
 
-            <div class="w-full max-w-5xl my-auto px-2 md:px-0">
-                <div id="playerContainer" class="w-full rounded-[1.5rem] md:rounded-[2rem] shadow-2xl border border-white/10 overflow-hidden bg-black"></div>
+            <div class="w-full max-w-4xl my-auto px-2 md:px-0">
+                <div id="playerContainer" class="w-full rounded-[1.5rem] md:rounded-[2rem] shadow-2xl border border-white/10 overflow-hidden bg-black/60"></div>
             </div>
         </div>
     </div>
@@ -328,6 +326,7 @@
             }
         }
 
+        // UPDATED METHOD: Uses modern clean HTML5 player to bypass Google's messy iframe controls
         function openPlayer(driveId, title) {
             const lightbox = document.getElementById('videoLightbox');
             const playerContainer = document.getElementById('playerContainer');
@@ -336,15 +335,26 @@
             document.querySelector('header').style.display = 'none';
             
             playerContainer.innerHTML = '';
-            const embedUrl = `https://drive.google.com/file/d/${driveId}/preview`;
             
-            const iframe = document.createElement('iframe');
-            iframe.src = embedUrl;
-            // Responsive mobile/desktop height classes added natively 
-            iframe.className = "w-full h-[300px] md:h-[500px] rounded-[1.5rem] md:rounded-[2rem] border-0";
-            iframe.setAttribute('allow', 'autoplay; fullscreen');
+            // Generate clean, direct media stream source from Google Drive ID
+            const directVideoUrl = `https://docs.google.com/get_video_info?docid=${driveId}&format=googlecode`;
+            const proxyFallbackUrl = `https://drive.google.com/uc?export=download&id=${driveId}`;
             
-            playerContainer.appendChild(iframe);
+            // Create a clean HTML5 video tag completely customizable by the browser viewport
+            const videoElement = document.createElement('video');
+            videoElement.className = "w-full h-full max-h-[75vh] rounded-[1.5rem] md:rounded-[2rem] border border-white/5 object-contain shadow-2xl";
+            videoElement.controls = true;
+            videoElement.autoplay = true;
+            videoElement.setAttribute('playsinline', 'true');
+            videoElement.setAttribute('webkit-playsinline', 'true');
+            
+            // Fallback strategy to maximize Google Drive media playback delivery compatibility
+            const source = document.createElement('source');
+            source.src = proxyFallbackUrl;
+            source.type = "video/mp4";
+            videoElement.appendChild(source);
+            
+            playerContainer.appendChild(videoElement);
             
             lightbox.classList.remove('invisible', 'opacity-0');
             document.body.style.overflow = 'hidden';
@@ -357,7 +367,9 @@
             document.querySelector('header').style.display = 'block';
             
             lightbox.classList.add('invisible', 'opacity-0');
-            document.getElementById('playerContainer').innerHTML = ''; 
+            
+            // Cleanly stop video play streams when closing modal
+            playerContainer.innerHTML = ''; 
             document.body.style.overflow = 'auto';
         }
 
@@ -395,4 +407,5 @@
         loadCollection('main');
     </script>
 </body>
-</html>
+                </html>
+    
