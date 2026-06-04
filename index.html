@@ -10,11 +10,11 @@
     
     body { 
         font-family: 'Inter', sans-serif; 
-            background-color: #000; color: white;
-            -webkit-user-select: none; user-select: none;
+        background-color: #000; color: white;
+        -webkit-user-select: none; user-select: none;
     }
-.custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.4); border-radius: 10px; }
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.4); border-radius: 10px; }
     nav {
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
@@ -46,126 +46,92 @@
 
     body { overflow-x: hidden; width: 100%; }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.instruction-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-  }
-
-  .instruction-box {
-    text-align: center;
-    padding: 30px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-    max-width: 400px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  }
-
-  .remove-btn {
-    margin-top: 15px;
-    padding: 8px 16px;
-    background-color: #ff4d4d; /* Red for 'remove' action */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  .remove-btn:hover {
-    background-color: #cc0000;
-  }
-
-
-
-
-
-
-/* =======================================================
-   EXACT INDEX.HTML MOBILE SPECIFICATIONS ALIGNMENT PATCH
-   ======================================================= */
-@media screen and (max-width: 768px) {
-    /* 1. Reset Navbar Padding, Gaps, and Text Sizes to match Index exactly */
-    nav {
-        padding: 1rem !important;              /* Clones index.html p-4 */
-        gap: 1rem !important;                 /* Clones index.html gap-4 */
+    .instruction-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
     }
 
-    nav a {
-        font-size: 10px !important;            /* Clones index.html text-[10px] */
-        letter-spacing: 0.1em !important;     /* Clones index.html tracking-widest */
-        padding-bottom: 4px !important;       /* Matches pb-1 clearance for the active border */
+    .instruction-box {
+        text-align: center;
+        padding: 30px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+        max-width: 400px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
 
-    /* 2. Rescale Title to match the Index page's h1 text-4xl size */
-    h1, .text-7xl {
-        font-size: 2.25rem !important;         /* Clones index.html text-4xl exactly */
-        line-height: 1 !important;             /* Clones leading-none */
-        margin-bottom: 1rem !important;        /* Clones mb-4 */
-        letter-spacing: -0.05em !important;    /* Clones tracking-tighter */
+    .remove-btn {
+        margin-top: 15px;
+        padding: 8px 16px;
+        background-color: #ff4d4d; /* Red for 'remove' action */
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
     }
 
-    /* 3. Re-adjust header positions and text sizes */
-    header {
-        padding-top: 0px !important;           /* Neutralizes the desktop pt-17 displacement */
-        padding-bottom: 2.5rem !important;    /* Matches pb-10 */
+    .remove-btn:hover {
+        background-color: #cc0000;
     }
 
-    #vaultSubtitle {
-        font-size: 10px !important;            /* Clones index subtitle font size */
-        letter-spacing: 0.4em !important;      /* Clones tracking-[0.4em] from index components */
-    }
+    /* =======================================================
+       EXACT INDEX.HTML MOBILE SPECIFICATIONS ALIGNMENT PATCH
+       ======================================================= */
+    @media screen and (max-width: 768px) {
+        /* 1. Reset Navbar Padding, Gaps, and Text Sizes to match Index exactly */
+        nav {
+            padding: 1rem !important;              /* Clones index.html p-4 */
+            gap: 1rem !important;                 /* Clones index.html gap-4 */
+        }
 
-    /* 4. Ensure grid layouts stay safe on compact phone frames */
-    #collectionLobby {
-        gap: 1.5rem !important;                /* Prevents cards from overcrowding */
-    }
-    
-    #collectionLobby h2.text-4xl {
-        font-size: 1.75rem !important;         /* Keeps card header scales crisp and within borders */
-        line-height: 1.1 !important;
-    }
-}
+        nav a {
+            font-size: 10px !important;            /* Clones index.html text-[10px] */
+            letter-spacing: 0.1em !important;     /* Clones index.html tracking-widest */
+            padding-bottom: 4px !important;       /* Matches pb-1 clearance for the active border */
+        }
 
+        /* 2. Rescale Title to match the Index page's h1 text-4xl size */
+        h1, .text-7xl {
+            font-size: 2.25rem !important;         /* Clones index.html text-4xl exactly */
+            line-height: 1 !important;             /* Clones leading-none */
+            margin-bottom: 1rem !important;        /* Clones mb-4 */
+            letter-spacing: -0.05em !important;    /* Clones tracking-tighter */
+        }
 
+        /* 3. Re-adjust header positions and text sizes */
+        header {
+            padding-top: 0px !important;           /* Neutralizes the desktop pt-17 displacement */
+            padding-bottom: 2.5rem !important;    /* Matches pb-10 */
+        }
 
+        #vaultSubtitle {
+            font-size: 10px !important;            /* Clones index subtitle font size */
+            letter-spacing: 0.4em !important;      /* Clones tracking-[0.4em] from index components */
+        }
 
-
-
-
-
-
-
-
-
-
-
+        /* 4. Ensure grid layouts stay safe on compact phone frames */
+        #collectionLobby {
+            gap: 1.5rem !important;                /* Prevents cards from overcrowding */
+        }
         
+        #collectionLobby h2.text-4xl {
+            font-size: 1.75rem !important;         /* Keeps card header scales crisp and within borders */
+            line-height: 1.1 !important;
+        }
+    }
+
+    /* Hidden by default until JavaScript checks localStorage status */
+    #instructionOverlay {
+        display: none; 
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
     </style>
 </head>
 <body class="custom-scrollbar overflow-x-hidden">
-  
-   
- 
-    
   
 <div id="loginOverlay" class="fixed inset-0 z-[9999] flex items-center justify-center backdrop-blur-3xl bg-black/60 transition-opacity duration-1000 animate-fadeIn p-4">
     <div id="glassBox" class="bg-white/5 p-8 md:p-12 rounded-[2rem] border border-white/10 shadow-2xl text-center backdrop-blur-lg transform transition-transform duration-1000 animate-slideUp w-full max-w-md">
@@ -179,6 +145,7 @@
         <p id="errorMsg" class="mt-6 text-red-500/50 text-xs hidden uppercase tracking-widest animate-pulse">Access Denied - Try Again</p>
     </div>
 </div>
+
 <section class="relative min-h-[calc(100vh-80px)] flex flex-col items-center justify-center text-center overflow-hidden flex-grow px-4">
     <div class="video-docker absolute top-0 left-0 w-full h-full">
         <video class="min-w-full min-h-full absolute object-cover" src="https://assets.mixkit.co/videos/preview/mixkit-group-of-friends-walking-in-a-university-campus-4444-large.mp4" autoplay muted loop playsinline></video>
@@ -191,9 +158,6 @@
         <a href="TimeLessVibe.html" class="hover:text-blue-400 transition">TimeLessVibe</a>
         <a href="videos.html" class="hover:text-blue-300 transition">Videos</a>
     </nav>
-
-
- 
 
     <main class="max-w-7xl mx-auto px-6 py-10 relative z-10">
         <header class="text-center w-full">
@@ -227,7 +191,7 @@
         </div>
         
     </main>
-    <footer class="flex-1 max-w-7xl mx-auto px-4 py-16 relative z-10 w=full text-center opacity-35 text-[8px] md:text-xs uppercase tracking-[0.3em] md:tracking-[0.5em] py-1 px-1 mt-auto">
+    <footer class="flex-1 max-w-7xl mx-auto px-4 py-16 relative z-10 text-center opacity-35 text-[8px] md:text-xs uppercase tracking-[0.3em] md:tracking-[0.5em] py-1 px-1 mt-auto">
     Batch 2022-2026 • The Journey Continues
 </footer>
 </section>
@@ -254,19 +218,28 @@
     </div>
 </div>
 
-
-
 <script>
+   // 1. CHOSEN STORAGE: Using sessionStorage so it resets when the tab closes
+    document.addEventListener('DOMContentLoaded', () => {
+        const overlay = document.getElementById('instructionOverlay');
+        if (sessionStorage.getItem('hasSeenInstructions') !== 'true') {
+            if (overlay) {
+                overlay.style.display = 'flex';
+                setTimeout(() => { overlay.style.opacity = '1'; }, 50);
+            }
+        }
+    });
 
-
-
-
-
-
-
-
-
-
+    function dismissInstructions() {
+        const overlay = document.getElementById('instructionOverlay');
+        if (overlay) {
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                sessionStorage.setItem('hasSeenInstructions', 'true');
+            }, 500);
+        }
+    }
 
     const modal = document.getElementById('videoModal');
 
@@ -300,7 +273,7 @@
         const container = document.getElementById('videoContainer');
         const titleContainer = document.getElementById('videoTitle');
         if(titleContainer) {
-            titleContainer.innerText = ''; // Kept empty to hide the name when playing
+            titleContainer.innerText = ''; 
             titleContainer.parentElement.parentElement.classList.remove('hidden');
         }
         
@@ -372,21 +345,18 @@
         document.getElementById('loginOverlay').style.display = 'none';
     }
 </script>
-<!-- Stylish Cinematic Instruction Note -->
-<div id="instructionNote" class="fixed inset-0 z-[99] flex items-center justify-center p-4">
-    <!-- Background blur overlay for deep focus -->
+
+<div id="instructionOverlay" class="fixed inset-0 z-[99] flex items-center justify-center p-4">
+    
     <div class="fixed inset-0 bg-black/70 backdrop-blur-sm"></div>
     
-    <!-- The Note Box: Glassmorphism Design -->
     <div class="relative bg-white/5 backdrop-blur-2xl border border-white/10 p-10 rounded-3xl text-center max-w-lg shadow-[0_0_80px_-10px_rgba(59,130,246,0.5)] scale-100 animate-fadeIn">
         
-        <!-- Elegant 'X' Close Button -->
         <button class="absolute top-5 right-5 text-white/40 hover:text-white transition-all text-2xl font-light" 
-                onclick="document.getElementById('instructionNote').style.display='none'">
+                onclick="dismissInstructions()">
           &times;
         </button>
 
-        <!-- Icon/Visual Element -->
         <div class="mb-6 inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-blue-600 to-blue-400 shadow-[0_0_30px_rgba(59,130,246,0.5)]">
             <span class="text-3xl text-white">✦</span>
         </div>
@@ -399,10 +369,9 @@
         
         <div class="flex justify-center gap-4">
             <button class="bg-white hover:bg-gray-200 text-blue-950 px-10 py-3 rounded-full text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:scale-105" 
-                    onclick="document.getElementById('instructionNote').style.display='none'">
+                    onclick="dismissInstructions()">
               Begin Journey
             </button>
-           
         </div>
     </div>
 </div>
