@@ -391,33 +391,26 @@ grid.innerHTML += `
 
         // ... your openPlayer and closePlayer functions ...
 
-    function openPlayer(driveId, title) {
+function openPlayer(driveId, title) {
     const lightbox = document.getElementById('videoLightbox');
     const playerContainer = document.getElementById('playerContainer');
     
-    playerContainer.innerHTML = `
-        <div class="relative w-full h-full">
-            <div id="uiLayer" onclick="toggleUI()" class="ui-hidden">
-                <div class="mt-4 px-3 py-1 bg-black/50 rounded-full text-[8px] text-white/50 uppercase tracking-[0.2em] backdrop-blur-sm">
-                    Tap video to toggle controls
-                </div>
-            </div>
-            
-            <iframe src="https://drive.google.com/file/d/${driveId}/preview" 
-                    class="w-full h-full border-0"
-                    allow="autoplay; fullscreen"
-                    allowfullscreen>
-            </iframe>
-        </div>
-    `;
+    playerContainer.innerHTML = '';
+    
+    // Add &rm=minimal here
+    const embedUrl = `https://drive.google.com/file/d/${driveId}/preview?rm=minimal`;
+    
+    const iframe = document.createElement('iframe');
+    iframe.src = embedUrl;
+    iframe.className = "w-full h-[500px] rounded-[2rem] border-0";
+    
+    iframe.setAttribute('allow', 'autoplay; fullscreen');
+    iframe.setAttribute('allowfullscreen', 'true');
+    
+    playerContainer.appendChild(iframe);
     
     lightbox.classList.remove('invisible', 'opacity-0');
     document.body.style.overflow = 'hidden';
-}
-
-function toggleUI() {
-    const uiLayer = document.getElementById('uiLayer');
-    uiLayer.classList.toggle('ui-hidden');
 }
 
         function closePlayer() {
