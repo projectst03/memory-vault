@@ -170,6 +170,17 @@
                 line-height: 1.1 !important;
             }
         }
+
+/* This targets the iframe specifically to adjust how it renders */
+#playerContainer iframe {
+    /* Scale the player to 95% to make buttons feel less "in your face" */
+    transform: scale(0.95);
+    transform-origin: center;
+    /* You may need to adjust the width/height to compensate */
+    width: 105%; 
+    height: 525px;
+}
+
     </style>
 </head>
 <body class="custom-scrollbar overflow-x-hidden">
@@ -337,19 +348,21 @@ grid.innerHTML += `
 
         // ... your openPlayer and closePlayer functions ...
 
-      function openPlayer(driveId, title) {
+        function openPlayer(driveId, title) {
     const lightbox = document.getElementById('videoLightbox');
     const playerContainer = document.getElementById('playerContainer');
     
     playerContainer.innerHTML = '';
     
-    // Add &rm=minimal here
+    // Using rm=minimal removes the bulky top bar, 
+    // leaving only the necessary video playback controls.
     const embedUrl = `https://drive.google.com/file/d/${driveId}/preview?rm=minimal`;
     
     const iframe = document.createElement('iframe');
     iframe.src = embedUrl;
     iframe.className = "w-full h-[500px] rounded-[2rem] border-0";
     
+    // Ensure these permissions are present to keep the Google player functional
     iframe.setAttribute('allow', 'autoplay; fullscreen');
     iframe.setAttribute('allowfullscreen', 'true');
     
