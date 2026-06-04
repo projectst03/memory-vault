@@ -170,13 +170,6 @@
                 line-height: 1.1 !important;
             }
         }
-        /* Make elements tiny and faded */
-.ui-mini {
-    transform: scale(0.7);
-    opacity: 0.3;
-    transition: all 0.5s ease;
-    pointer-events: none; /* Prevents accidental clicks */
-}
     </style>
 </head>
 <body class="custom-scrollbar overflow-x-hidden">
@@ -342,40 +335,42 @@
 
         // ... your openPlayer and closePlayer functions ...
 
-     function openPlayer(driveId, title) {
-    const lightbox = document.getElementById('videoLightbox');
-    const playerContainer = document.getElementById('playerContainer');
-    
-    // Force direct style override to bypass class conflicts
-    document.querySelector('nav').style.display = 'none';
-    document.querySelector('header').style.display = 'none';
-    
-    playerContainer.innerHTML = '';
-    const embedUrl = `https://drive.google.com/file/d/${driveId}/preview`;
-    
-    const iframe = document.createElement('iframe');
-    iframe.src = embedUrl;
-    iframe.className = "w-full h-[500px] rounded-[2rem] border-0";
-    iframe.setAttribute('allow', 'autoplay; fullscreen');
-    
-    playerContainer.appendChild(iframe);
-    
-    // Show lightbox
-    lightbox.classList.remove('invisible', 'opacity-0');
-    document.body.style.overflow = 'hidden';
-}
+        function openPlayer(driveId, title) {
+            const lightbox = document.getElementById('videoLightbox');
+            const playerContainer = document.getElementById('playerContainer');
+            
+            playerContainer.innerHTML = '';
+            
+            // Switch to the 'embedded' format which is much more reliable for streaming
+            const embedUrl = `https://drive.google.com/file/d/${driveId}/preview`;
+            
+            const iframe = document.createElement('iframe');
+            iframe.src = embedUrl;
+            iframe.className = "w-full h-[500px] rounded-[2rem] border-0";
+            
+            // Add all permissions needed to allow the video to initialize
+            iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
+            iframe.setAttribute('allowfullscreen', 'true');
+            
+            playerContainer.appendChild(iframe);
+            
+            lightbox.classList.remove('invisible', 'opacity-0');
+            document.body.style.overflow = 'hidden';
+        }
 
-function closePlayer() {
-    const lightbox = document.getElementById('videoLightbox');
-    
-    // Restore UI visibility
-    document.querySelector('nav').style.display = 'flex'; // or 'block'
-    document.querySelector('header').style.display = 'block';
-    
-    lightbox.classList.add('invisible', 'opacity-0');
-    document.getElementById('playerContainer').innerHTML = ''; 
-    document.body.style.overflow = 'auto';
-}
+        function closePlayer() {
+            // 1. Hide the lightbox
+            const lightbox = document.getElementById('videoLightbox');
+            lightbox.classList.add('invisible', 'opacity-0');
+            
+            // 2. IMPORTANT: This physically removes the player from the DOM,
+            // which forces the video to stop playing and clear its memory.
+            const playerContainer = document.getElementById('playerContainer');
+            playerContainer.innerHTML = ''; 
+            
+            // 3. Reset page scrolling
+            document.body.style.overflow = 'auto';
+        }
 
         // Add this dummy function so the error goes away
         function loadCollection(key) {
@@ -417,7 +412,7 @@ function closePlayer() {
             }
         });
 
-        loadCollection('main');
+      
     </script>
 </body>
 </html>
