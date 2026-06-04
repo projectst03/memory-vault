@@ -170,60 +170,6 @@
                 line-height: 1.1 !important;
             }
         }
-
-/* UI Layer to hold "Tap to hide" text or other controls */
-#uiLayer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 20;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    transition: opacity 0.3s ease;
-    background: transparent;
-    pointer-events: auto;
-}
-.ui-hidden {
-    opacity: 0;
-    pointer-events: none;
-}
-
-
-
-
-@media screen and (max-width: 768px) {
-    #playerContainer {
-        height: 300px !important; /* Smaller height for mobile to keep controls visible */
-    }
-    /* This forces the Google UI to be slightly less obtrusive */
-    #playerContainer iframe {
-        pointer-events: auto;
-    }
-}
-
-/* Shrink the lightbox header controls */
-    #videoLightbox .flex.justify-between {
-        padding: 1rem !important;
-    }
-
-    #videoLightbox button {
-        font-size: 8px !important;
-        padding: 4px 8px !important;
-    }
-
-    /* Scale the Close (X) button */
-    #videoLightbox .text-4xl {
-        font-size: 1.5rem !important; 
-    }
-}
-
-
-
-
-        
     </style>
 </head>
 <body class="custom-scrollbar overflow-x-hidden">
@@ -253,19 +199,19 @@
             <div id="collectionGrid" class="grid grid-cols-1 md:grid-cols-2 gap-10"></div>
         </main>
 
-<div id="videoLightbox" class="fixed inset-0 z-[100] invisible opacity-0 flex flex-col items-center p-2">
-    <div class="w-full flex justify-between items-center px-4 py-2 max-w-7xl">
-        <div class="flex gap-4 text-[8px] uppercase tracking-[0.2em] font-black">
-            <button onclick="closePlayer(); loadCollection('main')" class="text-blue-500 hover:text-white transition opacity-70">Home</button>
-            <button onclick="closePlayer()" class="text-gray-400 hover:text-white transition opacity-70">Exit</button>
-        </div>
-        <button onclick="closePlayer()" class="text-white/60 hover:text-white text-2xl leading-none">×</button>
-    </div>
+        <div id="videoLightbox" class="fixed inset-0 z-[100] invisible opacity-0 flex flex-col items-center p-4">
+            <div class="w-full flex justify-between items-center p-6 max-w-7xl">
+                <div class="flex gap-8 text-[10px] uppercase tracking-[0.3em] font-black">
+                    <button onclick="closePlayer(); loadCollection('main')" class="text-blue-500 hover:text-white transition">Home</button>
+                    <button onclick="closePlayer()" class="text-gray-400 hover:text-white transition">Back to Memories</button>
+                </div>
+                <button onclick="closePlayer()" class="text-white/40 hover:text-white text-4xl leading-none">×</button>
+            </div>
 
-    <div class="w-full max-w-5xl my-auto">
-        <div id="playerContainer" class="w-full rounded-[1.5rem] shadow-2xl border border-white/10 overflow-hidden"></div>
-    </div>
-</div>
+            <div class="w-full max-w-5xl my-auto">
+                <div id="playerContainer" class="w-full rounded-[2rem] shadow-2xl border border-white/10 overflow-hidden"></div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -391,7 +337,7 @@ grid.innerHTML += `
 
         // ... your openPlayer and closePlayer functions ...
 
-function openPlayer(driveId, title) {
+      function openPlayer(driveId, title) {
     const lightbox = document.getElementById('videoLightbox');
     const playerContainer = document.getElementById('playerContainer');
     
